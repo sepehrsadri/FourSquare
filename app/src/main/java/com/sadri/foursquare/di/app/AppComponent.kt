@@ -1,6 +1,7 @@
 package com.sadri.foursquare.di.app
 
 import com.sadri.foursquare.App
+import com.sadri.foursquare.di.data.DataModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -17,7 +18,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AndroidInjectionModule::class,
-        AppModule::class
+        AppModule::class,
+        DataModule::class
     ]
 )
 interface AppComponent {
