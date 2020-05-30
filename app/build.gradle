@@ -102,6 +102,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
     debugImplementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttp"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitRx"
 
     //Room
     implementation "androidx.room:room-runtime:$rootProject.room"

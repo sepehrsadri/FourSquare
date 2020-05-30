@@ -52,6 +52,7 @@ ext {
     rxJava = '2.2.13'
     rxAndroid = '2.1.1'
     room = '2.2.5'
+    retrofitRx = '2.4.0'
 
     // Test dependencies
     testJUnit = '4.12'
