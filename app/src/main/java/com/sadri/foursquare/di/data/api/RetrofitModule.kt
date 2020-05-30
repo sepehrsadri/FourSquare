@@ -1,9 +1,9 @@
-package com.sadri.foursquare.di.app
+package com.sadri.foursquare.di.data.api
 
-import android.content.Context
-import com.sadri.foursquare.App
+import com.sadri.foursquare.data.api.RetrofitProvider
 import dagger.Module
 import dagger.Provides
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 /**
@@ -12,13 +12,11 @@ import javax.inject.Singleton
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-@Suppress("unused")
 @Module
-object AppModule {
+object RetrofitModule {
     @Provides
     @Singleton
-    @ApplicationContext
-    fun provideApplicationContext(app: App): Context {
-        return app.applicationContext
+    fun provideRetrofit(): Retrofit {
+        return RetrofitProvider.getRetrofit()
     }
 }
