@@ -10,6 +10,8 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 apply plugin: "de.mannodermaus.android-junit5"
 
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -122,4 +124,26 @@ dependencies {
     testImplementation "android.arch.core:core-testing:$rootProject.androidX.lifecycle"
     kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kaptTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
+}
+
+ktlint {
+    android.set(true)
+    debug.set(true)
+    verbose.set(true)
+    outputToConsole.set(true)
+    outputColorName.set("RED")
+    disabledRules = [
+            "final-newline",
+            "import-ordering"
+    ]
+}
+
+// This runs ktLint checker before each compilation.
+afterEvaluate {
+    android.productFlavors.all {
+        flavor ->
+            def flavorName = flavor.name.capitalize()
+            tasks."compile${flavorName}DebugSources".dependsOn "ktlint${flavorName}DebugCheck"
+            tasks."compile${flavorName}ReleaseSources".dependsOn "ktlint${flavorName}ReleaseCheck"
+    }
 }
