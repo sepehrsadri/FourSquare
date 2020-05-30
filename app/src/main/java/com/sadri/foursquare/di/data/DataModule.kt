@@ -1,6 +1,7 @@
 package com.sadri.foursquare.di.data
 
 import com.sadri.foursquare.di.data.api.RetrofitModule
+import com.sadri.foursquare.di.data.scheduler.SchedulerModule
 import dagger.Module
 
 /**
@@ -11,7 +12,8 @@ import dagger.Module
  */
 @Module(
     includes = [
-        RetrofitModule::class
+        RetrofitModule::class,
+        SchedulerModule::class
     ]
 )
 object DataModule
