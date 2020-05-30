@@ -1,0 +1,44 @@
+image: jangrewe/gitlab-ci-android
+
+before_script:
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
+  - chmod +x ./gradlew
+
+cache:
+  key: ${CI_PROJECT_ID}
+  paths:
+    - .gradle/
+
+stages:
+  - debug
+  - test
+  - release
+
+assemblePrdDebug:
+  stage: debug
+  script:
+    - ./gradlew assemblePrdDebug
+  only:
+    - merge_requests
+
+testPrdDebug:
+  stage: test
+  script:
+    - ./gradlew -Pci --console=plain :app:testPrdDebug
+  only:
+    - merge_requests
+
+assembleRelease:
+  stage: release
+  script:
+    - echo $KEYSTORE_FILE | base64 -d > $(pwd)/keystore
+    - ./gradlew assemblePrdRelease
+      -Pandroid.injected.signing.store.file=$(pwd)/keystore
+      -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD
+      -Pandroid.injected.signing.key.alias=$KEY_ALIAS
+      -Pandroid.injected.signing.key.password=$KEY_PASSWORD
+  artifacts:
+    paths:
+      - app/build/outputs/apk/prd/release/
+  only:
+    - tags
