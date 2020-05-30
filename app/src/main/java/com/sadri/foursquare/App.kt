@@ -1,6 +1,7 @@
 package com.sadri.foursquare
 
 import android.app.Application
+import com.sadri.foursquare.components.logging.Logger
 
 /**
  * Created by Sepehr Sadri on 5/31/2020.
@@ -12,5 +13,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        Logger.init()
     }
 }
