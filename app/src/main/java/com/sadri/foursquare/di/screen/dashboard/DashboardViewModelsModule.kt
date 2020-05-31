@@ -3,6 +3,7 @@ package com.sadri.foursquare.di.screen.dashboard
 import androidx.lifecycle.ViewModel
 import com.sadri.foursquare.di.utils.view_model.ViewModelKey
 import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.DashboardViewModel
+import com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -21,4 +22,11 @@ abstract class DashboardViewModelsModule {
     @IntoMap
     @ViewModelKey(DashboardViewModel::class)
     abstract fun bindMainDashboardViewModel(viewModel: DashboardViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RequirementSatisfierViewModel::class)
+    abstract fun bindRequirementSatisfierViewModel(
+        viewModel: RequirementSatisfierViewModel
+    ): ViewModel
 }
