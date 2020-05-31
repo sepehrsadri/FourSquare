@@ -25,6 +25,16 @@ abstract class BaseViewModel : ViewModel() {
         )
     }
 
+    fun <T : Any?> observeWithInitUpdate(liveData: LiveData<T>, observer: Observer<T>) {
+        observingLiveDataList.add(
+            LiveDataAndObserver(
+                liveData,
+                observer
+            )
+        )
+        observer.onChanged(liveData.value)
+    }
+
     override fun onCleared() {
         for (liveDataAndObserver in observingLiveDataList) {
             liveDataAndObserver.stopObserving()
