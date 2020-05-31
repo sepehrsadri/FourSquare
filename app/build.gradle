@@ -125,6 +125,9 @@ dependencies {
     testImplementation "android.arch.core:core-testing:$rootProject.androidX.lifecycle"
     kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kaptTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
+
+    //Gms Location
+    implementation "com.google.android.gms:play-services-location:$rootProject.gmsLocation"
 }
 
 ktlint {
