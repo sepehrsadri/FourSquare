@@ -53,6 +53,7 @@ ext {
     rxAndroid = '2.1.1'
     room = '2.2.5'
     retrofitRx = '2.4.0'
+    gmsLocation = '12.0.1'
 
     // Test dependencies
     testJUnit = '4.12'
