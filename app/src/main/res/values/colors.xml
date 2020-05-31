@@ -13,6 +13,7 @@
     <color name="gray">#748194</color>
     <color name="place_holders">#b6c1d2</color>
     <color name="red">#ff6060</color>
+    <color name="scrim">#52000000</color>
 
     <color name="status_bar_color">@color/black</color>
 </resources>
