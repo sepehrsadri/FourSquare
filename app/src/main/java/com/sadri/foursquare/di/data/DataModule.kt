@@ -1,8 +1,13 @@
 package com.sadri.foursquare.di.data
 
+import android.content.Context
+import com.sadri.foursquare.data.utils.KeyValueStorage
+import com.sadri.foursquare.di.app.ApplicationContext
 import com.sadri.foursquare.di.data.api.RetrofitModule
 import com.sadri.foursquare.di.data.scheduler.SchedulerModule
 import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
 
 /**
  * Created by Sepehr Sadri on 5/31/2020.
@@ -16,4 +21,17 @@ import dagger.Module
         SchedulerModule::class
     ]
 )
-object DataModule
+object DataModule {
+
+    @Provides
+    @Singleton
+    fun provideKeyValueStorage(
+        @ApplicationContext context: Context
+    ): KeyValueStorage {
+        return KeyValueStorage(
+            KeyValueStorage.getPrivateSharedPreferences(
+                context
+            )
+        )
+    }
+}
