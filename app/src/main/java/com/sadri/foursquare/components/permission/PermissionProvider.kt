@@ -4,14 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
-import com.sadri.foursquare.R
 import com.sadri.foursquare.data.utils.KeyValueStorage
 import com.sadri.foursquare.di.app.ApplicationContext
-import com.sadri.foursquare.ui.utils.toast
 import com.sadri.foursquare.utils.gps.isGpsAvailable
 import com.sadri.foursquare.utils.live_data.SingleLiveEvent
 import javax.inject.Inject
@@ -40,7 +37,7 @@ class PermissionProvider @Inject constructor(
 
     private val permissionResult = MutableLiveData<Int>()
 
-    val locationPermissionResult = SingleLiveEvent<Nothing>()
+    val locationPermissionResult = SingleLiveEvent<PermissionResult>()
 
     private val LOCATION_PERMISSIONS = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -54,9 +51,19 @@ class PermissionProvider @Inject constructor(
 
     init {
         permissionResult.observeForever {
-            if (LOCATION_PERMISSION_REQUEST_ID.contains(it)) {
-                locationPermissionResult.call()
+            if (LOCATION_PERMISSION_REQUEST_ID.contains(it).not()) {
+                return@observeForever
             }
+
+            var result = PermissionResult.Accept
+
+            if (hasLocationPermission().not()) {
+                result =
+                    if (it == LOCATION_PERMISSIONS_REQUEST_ID_RATIONAL)
+                        PermissionResult.Ban else PermissionResult.Deny
+            }
+
+            locationPermissionResult.value = result
         }
     }
 
@@ -65,14 +72,15 @@ class PermissionProvider @Inject constructor(
         return hasPermissions(LOCATION_PERMISSIONS)
     }
 
+    fun isGpsAvailable() = context.isGpsAvailable()
+
     fun requestLocationPermission(activity: Activity) {
         checkAndRequestPermission(
             activity,
             LOCATION_PERMISSIONS,
             STORAGE_LOCATION_PERMISSION_REQUESTED_KEY,
             LOCATION_PERMISSIONS_REQUEST_ID,
-            LOCATION_PERMISSIONS_REQUEST_ID_RATIONAL,
-            R.string.access_location_permission
+            LOCATION_PERMISSIONS_REQUEST_ID_RATIONAL
         )
     }
     // endregion
@@ -99,7 +107,7 @@ class PermissionProvider @Inject constructor(
     }
 
     fun isLocationAvailableAndAccessible(): Boolean {
-        return context.isGpsAvailable() && hasLocationPermission()
+        return isGpsAvailable() && hasLocationPermission()
     }
 
     private fun checkAndRequestPermission(
@@ -107,8 +115,7 @@ class PermissionProvider @Inject constructor(
         permissions: Array<String>,
         saveKey: String,
         normalRequestID: Int,
-        rationalRequestID: Int,
-        messageResourceID: Int
+        rationalRequestID: Int
     ): Boolean {
         if (hasPermissions(permissions)) {
             return true
@@ -126,10 +133,6 @@ class PermissionProvider @Inject constructor(
 
         if (!askedBefore)
             keyValueStorage.putBool(saveKey, true)
-
-        if (askedBefore && !isRational) {
-            context.toast(messageResourceID, Toast.LENGTH_LONG)
-        }
 
         return false
     }
