@@ -1,5 +1,7 @@
 package com.sadri.foursquare.ui.screens.requirement_satisfier
 
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.tasks.Task
 import com.sadri.foursquare.ui.utils.owner_view_model.BaseViewModelOwner
 
 /**
@@ -8,4 +10,6 @@ import com.sadri.foursquare.ui.utils.owner_view_model.BaseViewModelOwner
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-interface RequirementSatisfierViewModelOwner : BaseViewModelOwner
+interface RequirementSatisfierViewModelOwner : BaseViewModelOwner {
+    fun getLocationSettingTask(): Task<LocationSettingsResponse>
+}
