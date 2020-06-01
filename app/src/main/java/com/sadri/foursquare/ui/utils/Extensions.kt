@@ -2,7 +2,10 @@ package com.sadri.foursquare.ui.utils
 
 import android.content.Context
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 
 /**
  * Created by Sepehr Sadri on 5/31/2020.
@@ -20,4 +23,15 @@ fun Context?.toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_LONG) {
     this?.let {
         Toast.makeText(it, it.getString(resId), duration).show()
     }
+}
+
+fun AppCompatImageView.setSrcCompat(
+    @DrawableRes icon: Int
+) {
+    this.setImageDrawable(
+        ContextCompat.getDrawable(
+            this.context,
+            icon
+        )
+    )
 }
