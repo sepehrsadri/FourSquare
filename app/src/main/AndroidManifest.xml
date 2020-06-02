@@ -18,14 +18,18 @@
         android:theme="@style/Theme.App.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.screens.dashboard.DashboardActivity"
-            android:screenOrientation="portrait">
+            android:name=".ui.screens.splash.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.App.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.screens.dashboard.DashboardActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
