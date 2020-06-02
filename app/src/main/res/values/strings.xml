@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">Four Square</string>
+    <string name="app_name">FourSquare</string>
+
+    <!-- RequirementSatisfier Screen -->
+    <string name="access_location_permission">fourSquare needs access to your phone location</string>
+    <string name="permission_bio">FourSquare needs your permission!</string>
+    <string name="permission_body">We need to access to your phone location</string>
+    <string name="permission_action">Allow GPS</string>
+    <string name="location_bio">Your GPS is off we can\'t find you !</string>
+    <string name="location_body">Please turn on GPS to find your exact location</string>
+    <string name="location_action">Turn on GPS</string>
+    <string name="toast_gps">Please turn on your gps from settings</string>
+    <string name="toast_permission">Please allow FourSquare to access your phone location</string>
+
 </resources>

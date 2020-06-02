@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_rounded_radius">31dp</dimen>
+    <dimen name="min_height_button">56dp</dimen>
+    <dimen name="splash_margin">200dp</dimen>
+
+    <!--Font Sizes-->
+    <dimen name="font_size_heading_3">25sp</dimen>
+    <dimen name="font_size_subtitle_1">15sp</dimen>
+    <dimen name="font_size_button_main">16sp</dimen>
+</resources>

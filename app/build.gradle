@@ -6,6 +6,12 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+apply plugin: "de.mannodermaus.android-junit5"
+
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -14,20 +20,31 @@ android {
         applicationId "com.sadri.foursquare"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 1
-        versionName "0.1.0"
+        versionCode 2
+        versionName "0.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "Four Square App v$versionName")
         vectorDrawables.useSupportLibrary true
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-        }
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        buildTypes {
+            debug {
+                minifyEnabled false
+                applicationIdSuffix ".debug"
+            }
+
+            release {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                debuggable false
+                zipAlignEnabled true
+                android.applicationVariants.all { variant ->
+                    variant.outputs.all {
+                        outputFileName = "FourSquare-${defaultConfig.versionName}-${defaultConfig.versionCode}-${variant.buildType.name}.apk"
+                    }
+                }
+            }
         }
     }
 
@@ -39,18 +56,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-    flavorDimensions "default"
-
-    productFlavors {
-        dev {
-            dimension "default"
-            applicationIdSuffix = ".dev"
-        }
-        prd {
-            dimension "default"
-        }
-    }
 }
 
 dependencies {
@@ -61,5 +66,87 @@ dependencies {
     implementation "androidx.core:core-ktx:$rootProject.androidX.coreKTX"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.androidX.constraintlayout"
 
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.androidX.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.androidX.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.androidX.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$rootProject.androidX.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.androidX.lifecycle"
 
+    // Fragments & Navigation Components
+    implementation "androidx.fragment:fragment-ktx:$rootProject.androidX.fragment"
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.androidX.navigation"
+    implementation("androidx.navigation:navigation-ui-ktx:$rootProject.androidX.navigation") {
+        exclude group: 'com.google.android.material', module: 'material'
+    }
+
+    // Dagger
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+    implementation "com.google.dagger:dagger:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
+
+    // UI
+    implementation "androidx.recyclerview:recyclerview:$rootProject.androidX.recyclerView"
+    implementation "com.google.android.material:material:$rootProject.androidX.material"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.androidX.swipeRefreshLayout"
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJava"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
+
+    // Networking
+    implementation "com.google.code.gson:gson:|$rootProject.gson"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttp"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitRx"
+
+    //Room
+    implementation "androidx.room:room-runtime:$rootProject.room"
+    kapt "androidx.room:room-compiler:$rootProject.room"
+    implementation "androidx.room:room-ktx:$rootProject.room"
+    implementation "androidx.room:room-rxjava2:$rootProject.room"
+
+    // Tools
+    implementation "com.jakewharton.timber:timber:$rootProject.timber"
+
+    // Test
+    testImplementation "junit:junit:$rootProject.testJUnit"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.testAndroidXJUnit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.testEspresso"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.junit"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.junit"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$rootProject.junit"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$rootProject.mockito"
+    testImplementation "org.mockito:mockito-inline:$rootProject.mockitoInline"
+    testImplementation "android.arch.core:core-testing:$rootProject.androidX.lifecycle"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kaptTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
+
+    //Gms Location
+    implementation "com.google.android.gms:play-services-location:$rootProject.gmsLocation"
+}
+
+ktlint {
+    android.set(true)
+    debug.set(true)
+    verbose.set(true)
+    outputToConsole.set(true)
+    outputColorName.set("RED")
+    disabledRules = [
+            "final-newline",
+            "import-ordering"
+    ]
+}
+
+// This runs ktLint checker before each compilation.
+afterEvaluate {
+    android.productFlavors.all {
+        flavor ->
+            def flavorName = flavor.name.capitalize()
+            tasks."compile${flavorName}DebugSources".dependsOn "ktlint${flavorName}DebugCheck"
+            tasks."compile${flavorName}ReleaseSources".dependsOn "ktlint${flavorName}ReleaseCheck"
+    }
 }
