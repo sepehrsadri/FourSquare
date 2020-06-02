@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Four Square</string>
+    <string name="app_name">FourSquare</string>
 
     <!-- RequirementSatisfier Screen -->
     <string name="access_location_permission">fourSquare needs access to your phone location</string>
