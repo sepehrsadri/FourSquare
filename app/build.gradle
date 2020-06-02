@@ -28,12 +28,23 @@ android {
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-        }
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        buildTypes {
+            debug {
+                minifyEnabled false
+                applicationIdSuffix ".debug"
+            }
+
+            release {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                debuggable false
+                zipAlignEnabled true
+                android.applicationVariants.all { variant ->
+                    variant.outputs.all {
+                        outputFileName = "FourSquare-${defaultConfig.versionName}-${defaultConfig.versionCode}-${variant.buildType.name}.apk"
+                    }
+                }
+            }
         }
     }
 
@@ -44,18 +55,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-
-    flavorDimensions "default"
-
-    productFlavors {
-        dev {
-            dimension "default"
-            applicationIdSuffix = ".dev"
-        }
-        prd {
-            dimension "default"
-        }
     }
 }
 
@@ -101,7 +100,7 @@ dependencies {
     implementation "com.google.code.gson:gson:|$rootProject.gson"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
-    debugImplementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttp"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitRx"
 
     //Room
