@@ -1,5 +1,6 @@
 package com.sadri.foursquare.data.api
 
+import com.sadri.foursquare.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -13,6 +14,10 @@ object APIUtils {
     const val API_BASE_URL = "https://api.foursquare.com/v2/"
 
     fun getLoggingInterceptor(): Interceptor? {
+        if (BuildConfig.DEBUG.not()) {
+            return null
+        }
+
         val logger = HttpLoggingInterceptor()
         logger.level = HttpLoggingInterceptor.Level.BODY
 
