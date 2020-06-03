@@ -4,6 +4,7 @@ import android.content.Context
 import com.sadri.foursquare.data.utils.KeyValueStorage
 import com.sadri.foursquare.di.app.ApplicationContext
 import com.sadri.foursquare.di.data.api.RetrofitModule
+import com.sadri.foursquare.di.data.explore.ExploreModule
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -16,7 +17,8 @@ import javax.inject.Singleton
  */
 @Module(
     includes = [
-        RetrofitModule::class
+        RetrofitModule::class,
+        ExploreModule::class
     ]
 )
 object DataModule {
