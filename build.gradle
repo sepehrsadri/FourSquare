@@ -49,11 +49,9 @@ ext {
     retrofit = '2.7.1'
     okHttp = '3.14.4'
     timber = '4.7.1'
-    rxJava = '2.2.13'
-    rxAndroid = '2.1.1'
     room = '2.2.5'
-    retrofitRx = '2.4.0'
     gmsLocation = '12.0.1'
+    coroutines = '1.3.3'
 
     // Test dependencies
     testJUnit = '4.12'
