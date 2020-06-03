@@ -1,5 +1,7 @@
 package com.sadri.foursquare.models.venue
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.sadri.foursquare.models.venue.category.Category
@@ -10,7 +12,9 @@ import com.sadri.foursquare.models.venue.category.Category
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
+@Entity(tableName = "Venue")
 data class Venue(
+    @PrimaryKey
     @Expose
     @SerializedName("id")
     val id: String,
