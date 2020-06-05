@@ -3,7 +3,11 @@ package com.sadri.foursquare.data.utils
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.google.gson.Gson
 import com.sadri.foursquare.BuildConfig
+import com.sadri.foursquare.models.MyPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -33,4 +37,34 @@ class KeyValueStorage @Inject constructor(private val sharedPreferences: SharedP
             putBoolean(key, value)
         }
     }
+
+    suspend fun getString(key: String, defaultValue: String? = null): String? =
+        withContext(Dispatchers.IO) {
+            sharedPreferences.getString(key, defaultValue)
+        }
+
+    suspend fun putString(key: String, value: String?) = withContext(Dispatchers.IO) {
+        sharedPreferences.edit(true) {
+            putString(key, value)
+        }
+    }
+
+    suspend fun getMyPoint(key: String, defaultValue: String? = null): MyPoint? =
+        withContext(Dispatchers.IO) {
+            val gson = Gson()
+            val json = sharedPreferences.getString(key, defaultValue)
+            gson.fromJson(
+                json,
+                MyPoint::class.java
+            )
+        }
+
+    suspend fun putMyPoint(key: String, value: MyPoint) =
+        withContext(Dispatchers.IO) {
+            val gson = Gson()
+            val json = gson.toJson(value)
+            sharedPreferences.edit(true) {
+                putString(key, json)
+            }
+        }
 }
