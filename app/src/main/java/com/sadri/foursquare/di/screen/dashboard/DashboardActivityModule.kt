@@ -2,6 +2,7 @@ package com.sadri.foursquare.di.screen.dashboard
 
 import com.sadri.foursquare.di.screen.PerFragment
 import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore.DashboardFragment
+import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.VenueDetailFragment
 import com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -23,4 +24,8 @@ abstract class DashboardActivityModule {
     @PerFragment
     @ContributesAndroidInjector
     abstract fun contributeRequirementSatisfierFragment(): RequirementSatisfierFragment
+
+    @PerFragment
+    @ContributesAndroidInjector
+    abstract fun contributeVenueDetailFragment(): VenueDetailFragment
 }
