@@ -99,7 +99,12 @@ class DashboardViewModel @Inject constructor(
     }
 
     fun onVenueClick(venue: Venue) {
-        toast.value = venue.name
+        navigate(
+            DashboardFragmentDirections
+                .navigateToVenueDetailFragment(
+                    venue.id
+                )
+        )
     }
 
     fun onScroll() {
