@@ -40,8 +40,6 @@
         <item name="textAppearanceButton">@style/TextAppearance.App.Button</item>
         <item name="textAppearanceCaption">@style/TextAppearance.App.Caption</item>
         <item name="textAppearanceOverline">@style/TextAppearance.App.Overline</item>
-
-        <item name="android:background">@color/background</item>
     </style>
 
     <style name="Theme.App.NoActionBar">

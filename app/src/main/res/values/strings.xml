@@ -12,4 +12,10 @@
     <string name="toast_gps">Please turn on your gps from settings</string>
     <string name="toast_permission">Please allow FourSquare to access your phone location</string>
 
+    <!-- Error Handling -->
+    <string name="error_no_internet">no internet connection</string>
+    <string name="error_server_error">server error happened</string>
+    <string name="error_unknown">problem with your request, please try again</string>
+
+    <string name="distance_place_holder">%1$s m far away</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.sadri.foursquare.ui.utils
 
 import android.content.Context
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -34,4 +35,18 @@ fun AppCompatImageView.setSrcCompat(
             icon
         )
     )
+}
+
+fun TextView.setTextFromResources(
+    @StringRes res: Int
+) {
+    this.text = context.resources.getString(res)
+}
+
+fun TextView.setTextFromResourcesWithArg(
+    @StringRes res: Int,
+    argument: String
+) {
+    val text = context.resources.getString(res, argument)
+    this.text = text
 }

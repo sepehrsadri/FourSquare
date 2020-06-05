@@ -1,10 +1,9 @@
 package com.sadri.foursquare.data.api
 
-import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Sepehr Sadri on 5/31/2020.
@@ -13,9 +12,13 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
 object RetrofitProvider {
+    private const val TIMEOUT_SECONDS: Long = 30
 
     fun getRetrofit(): Retrofit {
         val httpClient = OkHttpClient.Builder()
+            .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
 
         APIUtils.getLoggingInterceptor()?.let {
             httpClient.addInterceptor(
@@ -28,10 +31,6 @@ object RetrofitProvider {
                 APIUtils.API_BASE_URL
             ).addConverterFactory(
                 GsonConverterFactory.create()
-            )
-            .addCallAdapterFactory(
-                RxJava2CallAdapterFactory
-                    .createWithScheduler(Schedulers.io())
             )
             .client(
                 httpClient.build()

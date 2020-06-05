@@ -21,3 +21,5 @@ fun <T : Any?> LiveData<T>.observeWithInitUpdate(owner: LifecycleOwner, observer
     this.observe(owner, observer)
     observer.onChanged(value)
 }
+
+fun String?.extractEnDigits() = WordsExtractor.extractEnglishDigits(this)

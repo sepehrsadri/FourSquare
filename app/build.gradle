@@ -20,8 +20,8 @@ android {
         applicationId "com.sadri.foursquare"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 2
-        versionName "0.2.0"
+        versionCode 3
+        versionName "0.3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "Four Square App v$versionName")
         vectorDrawables.useSupportLibrary true
@@ -92,22 +92,16 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.androidX.material"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.androidX.swipeRefreshLayout"
 
-    // Rx
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJava"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
-
     // Networking
     implementation "com.google.code.gson:gson:|$rootProject.gson"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttp"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitRx"
 
     //Room
     implementation "androidx.room:room-runtime:$rootProject.room"
     kapt "androidx.room:room-compiler:$rootProject.room"
     implementation "androidx.room:room-ktx:$rootProject.room"
-    implementation "androidx.room:room-rxjava2:$rootProject.room"
 
     // Tools
     implementation "com.jakewharton.timber:timber:$rootProject.timber"
@@ -127,6 +121,10 @@ dependencies {
 
     //Gms Location
     implementation "com.google.android.gms:play-services-location:$rootProject.gmsLocation"
+
+    // coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
 }
 
 ktlint {

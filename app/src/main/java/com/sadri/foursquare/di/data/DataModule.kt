@@ -4,7 +4,8 @@ import android.content.Context
 import com.sadri.foursquare.data.utils.KeyValueStorage
 import com.sadri.foursquare.di.app.ApplicationContext
 import com.sadri.foursquare.di.data.api.RetrofitModule
-import com.sadri.foursquare.di.data.scheduler.SchedulerModule
+import com.sadri.foursquare.di.data.explore.ExploreModule
+import com.sadri.foursquare.di.data.persistent.PersistentModule
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -18,7 +19,8 @@ import javax.inject.Singleton
 @Module(
     includes = [
         RetrofitModule::class,
-        SchedulerModule::class
+        ExploreModule::class,
+        PersistentModule::class
     ]
 )
 object DataModule {
