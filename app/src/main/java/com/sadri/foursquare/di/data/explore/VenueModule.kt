@@ -14,7 +14,7 @@ import javax.inject.Singleton
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
 @Module
-object ExploreModule {
+object VenueModule {
     @Provides
     @Singleton
     fun provideExploreApiServices(retrofit: Retrofit): ExploreServices {

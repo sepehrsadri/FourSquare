@@ -12,5 +12,5 @@ import com.google.gson.annotations.SerializedName
 data class ExploreResponseWrapper(
     @Expose
     @SerializedName("response")
-    val response: Response
+    val exploreResponse: ExploreResponse
 )

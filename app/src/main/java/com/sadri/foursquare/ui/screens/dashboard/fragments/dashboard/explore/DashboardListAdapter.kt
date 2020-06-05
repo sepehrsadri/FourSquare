@@ -1,4 +1,4 @@
-package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard
+package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore
 
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
