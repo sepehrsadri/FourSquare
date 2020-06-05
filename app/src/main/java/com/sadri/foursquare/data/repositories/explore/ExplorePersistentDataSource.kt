@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class ExplorePersistentDataSource @Inject constructor(
     private val exploreDao: ExploreDao
 ) {
-    suspend fun getExplores(offset: Int): Result<List<Venue>> =
+    suspend fun getExploresByPageInstantly(offset: Int): Result<List<Venue>> =
         withContext(Dispatchers.IO) {
             val data = exploreDao.getByPageInstantly(
                 EXPLORE_DATA_LOAD_LIMIT,
@@ -39,5 +39,15 @@ class ExplorePersistentDataSource @Inject constructor(
     suspend fun clear() =
         withContext(Dispatchers.IO) {
             exploreDao.clear()
+        }
+
+    suspend fun dropAndInsertAll(venues: List<Venue>) =
+        withContext(Dispatchers.IO) {
+            exploreDao.dropAndInsertAll(venues)
+        }
+
+    suspend fun insertByPage(offset: Int, venues: List<Venue>) =
+        withContext(Dispatchers.IO) {
+            exploreDao.insertByPaged(offset, venues)
         }
 }
