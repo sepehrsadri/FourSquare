@@ -31,8 +31,4 @@ class ExploreApiDataSource @Inject constructor(
             EXPLORE_DATA_LOAD_LIMIT
         )
     }
-
-    companion object {
-        private const val LOCATION_KEY = "ll"
-    }
 }

@@ -12,7 +12,7 @@ import com.sadri.foursquare.models.venue.category.Category
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-class DataConverter {
+class DataConverters {
     @TypeConverter
     fun fromLocation(value: Location): String {
         val gson = Gson()
