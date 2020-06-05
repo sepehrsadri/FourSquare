@@ -22,25 +22,15 @@ import javax.inject.Singleton
 class GpsStateMonitor @Inject constructor(
     @ApplicationContext context: Context
 ) {
-    private var lastGpsAvailability = context.isGpsAvailable()
-
-    private val _hasGps = MutableLiveData<Boolean>()
+    private val _hasGps = MutableLiveData(context.isGpsAvailable())
     val hasGps: LiveData<Boolean>
         get() = _hasGps
-
-    private val gpsBroadcastState = MutableLiveData<Boolean>()
 
     init {
         GpsBroadcastReceiver.build(
             context,
-            gpsBroadcastState
+            _hasGps
         )
-        gpsBroadcastState.observeForever {
-            if (lastGpsAvailability != it) {
-                _hasGps.value = it
-                lastGpsAvailability = it
-            }
-        }
     }
 }
 

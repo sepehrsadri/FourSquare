@@ -21,7 +21,7 @@ import com.sadri.foursquare.models.venue.Venue
     version = 1,
     exportSchema = false
 )
-@TypeConverters(DataConverter::class)
+@TypeConverters(DataConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun venueDao(): ExploreDao
 
@@ -49,5 +49,4 @@ abstract class AppDatabase : RoomDatabase() {
             return DB_INSTANCE!!
         }
     }
-
 }

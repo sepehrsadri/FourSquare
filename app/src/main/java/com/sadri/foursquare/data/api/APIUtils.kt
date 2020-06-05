@@ -25,7 +25,6 @@ object APIUtils {
 
     const val API_DATE_VERSION: Int = 20200603
 
-
     fun getLoggingInterceptor(): Interceptor? {
         if (BuildConfig.DEBUG.not()) {
             return null

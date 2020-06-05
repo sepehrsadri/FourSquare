@@ -17,7 +17,7 @@ data class Venue(
     @PrimaryKey
     @Expose
     @SerializedName("id")
-    val id: String,
+    var id: String,
     @Expose
     @SerializedName("name")
     val name: String,

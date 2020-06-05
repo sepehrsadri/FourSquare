@@ -7,3 +7,4 @@ package com.sadri.foursquare.data.repositories.explore
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
 const val EXPLORE_DATA_LOAD_LIMIT = 10
+const val EXPLORE_DATA_OFFSET = 10
