@@ -1,4 +1,4 @@
-package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard
+package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -65,9 +65,10 @@ class DashboardFragment : NavigationFragment() {
             }
         )
 
-        val adapter = DashboardListAdapter(
-            viewModel
-        )
+        val adapter =
+            DashboardListAdapter(
+                viewModel
+            )
 
         viewModel.venues.observe(
             viewLifecycleOwner,

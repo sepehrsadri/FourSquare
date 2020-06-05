@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-data class Response(
+data class ExploreResponse(
     @Expose
     @SerializedName("groups")
     val groups: List<Group>

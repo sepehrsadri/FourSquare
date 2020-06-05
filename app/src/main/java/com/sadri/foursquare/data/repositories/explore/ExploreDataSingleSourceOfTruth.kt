@@ -61,7 +61,7 @@ class ExploreDataSingleSourceOfTruth @Inject constructor(
             is ApiResult.Success -> {
                 val data = apiRes.data
                 if (data != null) {
-                    val groups = data.response.groups.firstOrNull()
+                    val groups = data.exploreResponse.groups.firstOrNull()
 
                     if (groups != null && groups.items.isNullOrEmpty().not()) {
                         val venues: MutableList<Venue> = ArrayList()
