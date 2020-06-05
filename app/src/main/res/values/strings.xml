@@ -17,4 +17,5 @@
     <string name="error_server_error">server error happened</string>
     <string name="error_unknown">problem with your request, please try again</string>
 
+    <string name="distance_place_holder">%1$s m far away</string>
 </resources>

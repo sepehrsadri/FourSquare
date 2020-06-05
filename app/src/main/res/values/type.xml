@@ -78,7 +78,27 @@
     </style>
 
     <style name="TextAppearance.App.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <!--Your custom type style here-->
+        <!-- Font setting doesn't work because of a bug in material components library-->
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">@dimen/font_size_subtitle_2</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextAppearance.App.Subtitle2.Medium">
+        <!-- Font setting doesn't work because of a bug in material components library-->
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="TextAppearance.App.Subtitle2.Bold">
+        <!-- Font setting doesn't work because of a bug in material components library-->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.App.Subtitle3" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <!-- Font setting doesn't work because of a bug in material components library-->
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:textSize">@dimen/font_size_subtitle_3</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
     <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">

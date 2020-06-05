@@ -22,7 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class ExploreDataSingleSourceOfTruth @Inject constructor(
     private val exploreApiDataSource: ExploreApiDataSource,
-    private val explorePersistentDataSource: ExplorePersistentDataSource,
+    val explorePersistentDataSource: ExplorePersistentDataSource,
     private val locationProvider: LocationProvider
 ) {
     fun fetchExplores(
