@@ -2,6 +2,7 @@ package com.sadri.foursquare.di.data.explore
 
 import com.sadri.foursquare.data.api.RetrofitProvider
 import com.sadri.foursquare.data.repositories.explore.ExploreServices
+import com.sadri.foursquare.data.repositories.venue_detail.VenueDetailServices
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -21,6 +22,15 @@ object VenueModule {
         return RetrofitProvider.provideService(
             retrofit,
             ExploreServices::class.java
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideVenueDetailApiServices(retrofit: Retrofit): VenueDetailServices {
+        return RetrofitProvider.provideService(
+            retrofit,
+            VenueDetailServices::class.java
         )
     }
 }
