@@ -1,6 +1,7 @@
 package com.sadri.foursquare.data.utils
 
 import android.content.Context
+import com.sadri.foursquare.BuildConfig
 import com.sadri.foursquare.R
 import com.sadri.foursquare.di.app.ApplicationContext
 import com.sadri.foursquare.models.Error
@@ -54,7 +55,12 @@ class ApiErrorHandler @Inject constructor(
             )
         }
 
-        val responseMessage = response.errorBody()?.toString() ?: getString(R.string.error_unknown)
+        val responseMessage =
+            if (BuildConfig.DEBUG) {
+                response.errorBody()?.toString() ?: getString(R.string.error_unknown)
+            } else {
+                getString(R.string.error_unknown)
+            }
 
         return ApiResult.Error(
             Error(

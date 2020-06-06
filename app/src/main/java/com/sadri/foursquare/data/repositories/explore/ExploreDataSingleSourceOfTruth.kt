@@ -53,8 +53,10 @@ class ExploreDataSingleSourceOfTruth @Inject constructor(
         myPoint: MyPoint
     ) {
         val apiRes = exploreApiDataSource.getExplores(
-            myPoint,
-            offset
+            ExploreServiceModel(
+                myPoint,
+                offset
+            )
         )
 
         when (apiRes) {

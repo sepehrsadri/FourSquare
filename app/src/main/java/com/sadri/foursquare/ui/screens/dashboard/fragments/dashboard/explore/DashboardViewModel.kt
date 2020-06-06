@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.sadri.foursquare.components.location.LocationProvider
 import com.sadri.foursquare.components.permission.PermissionProvider
 import com.sadri.foursquare.data.repositories.explore.EXPLORE_DATA_OFFSET
+import com.sadri.foursquare.data.repositories.explore.EXPLORE_MAXIMUM_PAGE
 import com.sadri.foursquare.data.repositories.explore.ExploreDataSingleSourceOfTruth
 import com.sadri.foursquare.data.repositories.explore.ExploreResult
 import com.sadri.foursquare.data.utils.Result
@@ -29,7 +30,7 @@ class DashboardViewModel @Inject constructor(
     private val exploreDataSingleSourceOfTruth: ExploreDataSingleSourceOfTruth,
     locationProvider: LocationProvider
 ) : NavigationViewModel() {
-    val toast = SingleLiveEvent<String>()
+    val messageEvent = SingleLiveEvent<String>()
 
     private val _venues = MutableLiveData<List<Venue>>()
     val venues: LiveData<List<Venue>>
@@ -54,7 +55,7 @@ class DashboardViewModel @Inject constructor(
                 }
                 is Result.Error -> {
                     fullscreenLoading.value = false
-                    toast.value = it.error.message
+                    messageEvent.value = it.error.message
                     isLoading = false
                 }
             }
@@ -113,7 +114,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun fetchVenues() {
-        if (isLoading) {
+        if (isLoading || isReachMaximumPage()) {
             return
         }
         isLoading = true
@@ -125,6 +126,8 @@ class DashboardViewModel @Inject constructor(
             exploreObserver
         )
     }
+
+    private fun isReachMaximumPage() = page > EXPLORE_MAXIMUM_PAGE
 
     fun initFetch() {
         if (venuesList.isEmpty()) {
