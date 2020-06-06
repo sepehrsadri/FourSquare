@@ -19,16 +19,26 @@ class ExploreApiDataSource @Inject constructor(
     errorHandler: ApiErrorHandler
 ) : BaseAPIDataSource(errorHandler) {
 
-    suspend fun getExplores(
-        myPoint: MyPoint,
-        offset: Int
-    ) = getResult {
+    suspend fun getExplores(model: ExploreServiceModel) = getResult {
         service.getExplores(
             APIUtils.queries,
-            myPoint.toString(),
+            model.point,
             APIUtils.API_DATE_VERSION,
-            offset,
-            EXPLORE_DATA_LOAD_LIMIT
+            model.offset,
+            EXPLORE_DATA_LOAD_LIMIT,
+            model.distanceSort,
+            model.popularitySort
         )
     }
+}
+
+data class ExploreServiceModel(
+    private val myPoint: MyPoint,
+    val offset: Int,
+    private val sortByDistance: Boolean = true,
+    private val sortByPopularity: Boolean = false
+) {
+    val point = myPoint.toString()
+    val distanceSort = if (sortByDistance) 1 else 0
+    val popularitySort = if (sortByPopularity) 1 else 0
 }

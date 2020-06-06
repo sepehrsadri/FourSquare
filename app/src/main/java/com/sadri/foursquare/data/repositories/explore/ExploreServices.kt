@@ -20,6 +20,9 @@ interface ExploreServices {
         @Query("ll") location: String,
         @Query("v") apiVersion: Int,
         @Query("offset") offset: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
+        @Query("sortByDistance") sortByDistance: Int,
+        @Query("sortByPopularity") sortByPopularity: Int
+
     ): Response<ExploreResponseWrapper>
 }

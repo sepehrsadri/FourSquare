@@ -8,3 +8,4 @@ package com.sadri.foursquare.data.repositories.explore
  */
 const val EXPLORE_DATA_LOAD_LIMIT = 10
 const val EXPLORE_DATA_OFFSET = 10
+const val EXPLORE_MAXIMUM_PAGE = 5

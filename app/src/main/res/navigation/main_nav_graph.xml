@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.DashboardFragment"
+        android:name="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore.DashboardFragment"
         android:label="dashboard_fragment"
         tools:layout="@layout/fragment_dashboard">
 
@@ -20,6 +20,19 @@
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
 
+        <action
+            android:id="@+id/navigate_to_venueDetailFragment"
+            app:destination="@id/venueDetailFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit">
+            <argument
+                android:name="venueId"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
+
     </fragment>
 
     <fragment
@@ -27,5 +40,16 @@
         android:name="com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierFragment"
         android:label="requirement_satisfier_fragment"
         tools:layout="@layout/fragment_requirement_satisfier" />
+
+    <fragment
+        android:id="@+id/venueDetailFragment"
+        android:name="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.VenueDetailFragment"
+        android:label="venue_detail_fragment"
+        tools:layout="@layout/fragment_venue_detail">
+        <argument
+            android:name="venueId"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
 
 </navigation>

@@ -1,4 +1,4 @@
-package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard
+package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.sadri.foursquare.components.location.LocationProvider
 import com.sadri.foursquare.components.permission.PermissionProvider
 import com.sadri.foursquare.data.repositories.explore.EXPLORE_DATA_OFFSET
+import com.sadri.foursquare.data.repositories.explore.EXPLORE_MAXIMUM_PAGE
 import com.sadri.foursquare.data.repositories.explore.ExploreDataSingleSourceOfTruth
 import com.sadri.foursquare.data.repositories.explore.ExploreResult
+import com.sadri.foursquare.data.repositories.venue_detail.VenueDetailSingleSourceOfTruth
 import com.sadri.foursquare.data.utils.Result
 import com.sadri.foursquare.models.venue.Venue
 import com.sadri.foursquare.ui.navigation.NavigationViewModel
@@ -27,9 +29,10 @@ class DashboardViewModel @Inject constructor(
     gpsStateMonitor: GpsStateMonitor,
     private val permissionProvider: PermissionProvider,
     private val exploreDataSingleSourceOfTruth: ExploreDataSingleSourceOfTruth,
+    private val venueDetailSingleSourceOfTruth: VenueDetailSingleSourceOfTruth,
     locationProvider: LocationProvider
 ) : NavigationViewModel() {
-    val toast = SingleLiveEvent<String>()
+    val messageEvent = SingleLiveEvent<String>()
 
     private val _venues = MutableLiveData<List<Venue>>()
     val venues: LiveData<List<Venue>>
@@ -54,7 +57,7 @@ class DashboardViewModel @Inject constructor(
                 }
                 is Result.Error -> {
                     fullscreenLoading.value = false
-                    toast.value = it.error.message
+                    messageEvent.value = it.error.message
                     isLoading = false
                 }
             }
@@ -94,12 +97,26 @@ class DashboardViewModel @Inject constructor(
                 venuesList.clear()
                 page = 0
                 fetchVenues()
+                invalidateVenueDetailSource()
             }
         )
     }
 
+    private fun invalidateVenueDetailSource() {
+        viewModelScope.launch {
+            venueDetailSingleSourceOfTruth
+                .venueDetailPersistentDataSource
+                .clear()
+        }
+    }
+
     fun onVenueClick(venue: Venue) {
-        toast.value = venue.name
+        navigate(
+            DashboardFragmentDirections
+                .navigateToVenueDetailFragment(
+                    venue.id
+                )
+        )
     }
 
     fun onScroll() {
@@ -108,7 +125,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun fetchVenues() {
-        if (isLoading) {
+        if (isLoading || isReachMaximumPage()) {
             return
         }
         isLoading = true
@@ -120,6 +137,8 @@ class DashboardViewModel @Inject constructor(
             exploreObserver
         )
     }
+
+    private fun isReachMaximumPage() = page > EXPLORE_MAXIMUM_PAGE
 
     fun initFetch() {
         if (venuesList.isEmpty()) {

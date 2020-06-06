@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:id="@+id/container"
     android:paddingVertical="20dp"
-    tools:context="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.DashboardFragment">
+    tools:context="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore.DashboardFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"

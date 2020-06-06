@@ -3,6 +3,7 @@ package com.sadri.foursquare.di.data.persistent
 import android.content.Context
 import com.sadri.foursquare.data.persistent.AppDatabase
 import com.sadri.foursquare.data.persistent.venue.ExploreDao
+import com.sadri.foursquare.data.persistent.venue_detail.VenueDetailDao
 import com.sadri.foursquare.di.app.ApplicationContext
 import dagger.Module
 import dagger.Provides
@@ -26,5 +27,11 @@ object PersistentModule {
     @Singleton
     fun provideVenueDao(appDatabase: AppDatabase): ExploreDao {
         return appDatabase.venueDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideVenueDetailDao(appDatabase: AppDatabase): VenueDetailDao {
+        return appDatabase.venueDetailDao()
     }
 }

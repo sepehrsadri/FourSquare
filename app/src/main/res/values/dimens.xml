@@ -5,9 +5,12 @@
     <dimen name="splash_margin">200dp</dimen>
 
     <!--Font Sizes-->
+    <dimen name="font_size_heading_1">40dp</dimen>
     <dimen name="font_size_heading_3">25sp</dimen>
+    <dimen name="font_size_heading_4">20sp</dimen>
     <dimen name="font_size_subtitle_1">15sp</dimen>
     <dimen name="font_size_subtitle_2">14sp</dimen>
     <dimen name="font_size_subtitle_3">11sp</dimen>
+    <dimen name="font_size_subtitle_4">10sp</dimen>
     <dimen name="font_size_button_main">16sp</dimen>
 </resources>

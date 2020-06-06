@@ -15,7 +15,19 @@
     <!-- Error Handling -->
     <string name="error_no_internet">no internet connection</string>
     <string name="error_server_error">server error happened</string>
-    <string name="error_unknown">problem with your request, please try again</string>
+    <string name="error_unknown">problem happened with your request</string>
 
     <string name="distance_place_holder">%1$s m far away</string>
+
+    <!-- VenueDetail Screen -->
+    <string name="venue_detail_header">Details</string>
+    <string name="venue_address_header">Address</string>
+    <string name="venue_description_header">Description</string>
+    <string name="call">Call</string>
+    <string name="directions">Directions</string>
+    <string name="undefined_status">Undefined Service hours</string>
+    <string name="empty_description">No Description for this location!</string>
+    <string name="undefined_rate">undefined</string>
+    <string name="unknown_category">Unknown Category</string>
+
 </resources>

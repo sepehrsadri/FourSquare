@@ -1,4 +1,4 @@
-package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard
+package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.sadri.foursquare.components.permission.PermissionProvider
 import com.sadri.foursquare.ui.navigation.NavigationFragment
 import com.sadri.foursquare.ui.navigation.NavigationViewModel
 import com.sadri.foursquare.ui.utils.EndlessRecyclerOnScrollListener
-import com.sadri.foursquare.ui.utils.toast
+import com.sadri.foursquare.ui.utils.snackBar
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import javax.inject.Inject
 
@@ -56,18 +56,22 @@ class DashboardFragment : NavigationFragment() {
             swipeRefreshLayout.isRefreshing = false
         }
 
-        viewModel.toast.observe(
+        viewModel.messageEvent.observe(
             viewLifecycleOwner,
             Observer {
                 it?.let {
-                    requireContext().toast(it)
+                    requireContext().snackBar(
+                        it,
+                        container
+                    )
                 }
             }
         )
 
-        val adapter = DashboardListAdapter(
-            viewModel
-        )
+        val adapter =
+            DashboardListAdapter(
+                viewModel
+            )
 
         viewModel.venues.observe(
             viewLifecycleOwner,
