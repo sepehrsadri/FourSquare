@@ -39,6 +39,10 @@ class DashboardViewModel @Inject constructor(
     val venues: LiveData<List<Venue>>
         get() = _venues
 
+    private val _venuesListAvailability = MutableLiveData(true)
+    val venuesListAvailability: LiveData<Boolean>
+        get() = _venuesListAvailability
+
     private var page: Int = 0
 
     private val venuesList: MutableList<Venue> = ArrayList()
@@ -52,6 +56,7 @@ class DashboardViewModel @Inject constructor(
                     fullscreenLoading.value = true
                 }
                 is Result.Success -> {
+                    _venuesListAvailability.value = true
                     updateVenuesList(it)
                     fullscreenLoading.value = false
                     isLoading = false
@@ -60,6 +65,10 @@ class DashboardViewModel @Inject constructor(
                     fullscreenLoading.value = false
                     messageEvent.value = it.error.message
                     isLoading = false
+
+                    if (venuesList.isEmpty()) {
+                        _venuesListAvailability.value = false
+                    }
                 }
             }
         }

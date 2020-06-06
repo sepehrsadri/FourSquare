@@ -68,6 +68,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TextAppearance.App.Headline4.Gray">
+        <!-- Font setting doesn't work because of a bug in material components library-->
+        <item name="android:textColor">@color/dashboard_no_locations_text_color</item>
+    </style>
 
     <style name="TextAppearance.App.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
         <!--Your custom type style here-->

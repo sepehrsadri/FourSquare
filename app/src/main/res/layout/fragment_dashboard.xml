@@ -50,6 +50,32 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/noLocationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_no_location" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/no_locations"
+                    android:textAppearance="@style/TextAppearance.App.Headline4.Gray" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvVenues"
                 android:layout_width="match_parent"
@@ -59,7 +85,8 @@
                 android:paddingVertical="20dp"
                 android:scrollbarStyle="outsideInset"
                 android:scrollbarThumbVertical="@color/colorPrimary"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:visibility="visible" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
