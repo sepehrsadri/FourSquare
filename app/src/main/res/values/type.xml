@@ -165,6 +165,10 @@
         <!--Your custom type style here-->
     </style>
 
+    <style name="TextAppearance.App.Button.Bold.StateColor" parent="TextAppearance.App.Button">
+        <item name="android:backgroundTint">@color/button_state_list_color</item>
+    </style>
+
     <style name="TextAppearance.App.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <!--Your custom type style here-->
     </style>

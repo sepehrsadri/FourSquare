@@ -137,12 +137,11 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/callBtn"
-                        style="@style/TextAppearance.App.Button.Bold"
+                        style="@style/TextAppearance.App.Button.Bold.StateColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:drawableStart="@drawable/ic_call"
-                        android:enabled="false"
                         android:gravity="center"
                         android:text="@string/call" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
