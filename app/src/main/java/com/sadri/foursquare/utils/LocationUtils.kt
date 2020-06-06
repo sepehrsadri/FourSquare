@@ -29,3 +29,10 @@ fun MyPoint.toLocation(): Location {
     location.longitude = this.lng
     return location
 }
+
+fun com.sadri.foursquare.models.venue.Location.toMyPoint(): MyPoint {
+    return MyPoint(
+        this.lat,
+        this.lng
+    )
+}
