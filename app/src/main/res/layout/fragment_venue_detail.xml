@@ -42,10 +42,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginHorizontal="5dp"
                     android:layout_marginTop="25dp"
+                    android:ellipsize="end"
                     android:gravity="center"
                     android:lines="1"
+                    android:paddingHorizontal="2dp"
                     android:paddingBottom="10dp"
                     android:textAppearance="@style/TextAppearance.App.Headline1.Pink" />
 
