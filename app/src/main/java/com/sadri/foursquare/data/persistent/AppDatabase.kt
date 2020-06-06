@@ -6,7 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.sadri.foursquare.data.persistent.venue.ExploreDao
+import com.sadri.foursquare.data.persistent.venue_detail.VenueDetailDao
 import com.sadri.foursquare.models.venue.Venue
+import com.sadri.foursquare.models.venue.detail.VenueDetail
 
 /**
  * Created by Sepehr Sadri on 6/3/2020.
@@ -16,7 +18,8 @@ import com.sadri.foursquare.models.venue.Venue
  */
 @Database(
     entities = [
-        Venue::class
+        Venue::class,
+        VenueDetail::class
     ],
     version = 1,
     exportSchema = false
@@ -24,6 +27,7 @@ import com.sadri.foursquare.models.venue.Venue
 @TypeConverters(DataConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun venueDao(): ExploreDao
+    abstract fun venueDetailDao(): VenueDetailDao
 
     companion object {
         private const val DATABASE_NAME: String = "FOUR_SQUARE"
