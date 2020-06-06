@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class VenueDetailSingleSourceOfTruth @Inject constructor(
     private val venueDetailApiDataSource: VenueDetailApiDataSource,
-    private val venueDetailPersistentDataSource: VenueDetailPersistentDataSource
+    val venueDetailPersistentDataSource: VenueDetailPersistentDataSource
 ) {
     /**
      * This is right implementation of single source strategy because after fetching from api should update last data

@@ -10,6 +10,7 @@ import com.sadri.foursquare.data.repositories.explore.EXPLORE_DATA_OFFSET
 import com.sadri.foursquare.data.repositories.explore.EXPLORE_MAXIMUM_PAGE
 import com.sadri.foursquare.data.repositories.explore.ExploreDataSingleSourceOfTruth
 import com.sadri.foursquare.data.repositories.explore.ExploreResult
+import com.sadri.foursquare.data.repositories.venue_detail.VenueDetailSingleSourceOfTruth
 import com.sadri.foursquare.data.utils.Result
 import com.sadri.foursquare.models.venue.Venue
 import com.sadri.foursquare.ui.navigation.NavigationViewModel
@@ -28,6 +29,7 @@ class DashboardViewModel @Inject constructor(
     gpsStateMonitor: GpsStateMonitor,
     private val permissionProvider: PermissionProvider,
     private val exploreDataSingleSourceOfTruth: ExploreDataSingleSourceOfTruth,
+    private val venueDetailSingleSourceOfTruth: VenueDetailSingleSourceOfTruth,
     locationProvider: LocationProvider
 ) : NavigationViewModel() {
     val messageEvent = SingleLiveEvent<String>()
@@ -95,8 +97,17 @@ class DashboardViewModel @Inject constructor(
                 venuesList.clear()
                 page = 0
                 fetchVenues()
+                invalidateVenueDetailSource()
             }
         )
+    }
+
+    private fun invalidateVenueDetailSource() {
+        viewModelScope.launch {
+            venueDetailSingleSourceOfTruth
+                .venueDetailPersistentDataSource
+                .clear()
+        }
     }
 
     fun onVenueClick(venue: Venue) {

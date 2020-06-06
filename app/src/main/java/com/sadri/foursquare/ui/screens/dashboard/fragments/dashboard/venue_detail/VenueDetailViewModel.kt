@@ -8,6 +8,7 @@ import com.sadri.foursquare.data.utils.Result
 import com.sadri.foursquare.models.venue.detail.VenueDetail
 import com.sadri.foursquare.ui.navigation.NavigationCommand
 import com.sadri.foursquare.ui.navigation.NavigationViewModel
+import com.sadri.foursquare.utils.extractEnDigits
 import com.sadri.foursquare.utils.live_data.SingleLiveEvent
 import com.sadri.foursquare.utils.toMyPoint
 import javax.inject.Inject
@@ -131,7 +132,7 @@ class VenueDetailViewModel @Inject constructor(
             }
 
         return VenueDetailDataModel(
-            data.name,
+            data.name.extractEnDigits(),
             category,
             rate,
             availabilityStatus,
