@@ -19,5 +19,7 @@
 
     <color name="venue_detail_header_background">#F5B3C5</color>
 
+    <color name="dashboard_no_internet_background">#F66868</color>
+
     <color name="status_bar_color">@color/black</color>
 </resources>
