@@ -33,6 +33,7 @@ class DashboardViewModel @Inject constructor(
     locationProvider: LocationProvider
 ) : NavigationViewModel() {
     val messageEvent = SingleLiveEvent<String>()
+    val locationChange = SingleLiveEvent<Nothing>()
 
     private val _venues = MutableLiveData<List<Venue>>()
     val venues: LiveData<List<Venue>>
@@ -94,6 +95,7 @@ class DashboardViewModel @Inject constructor(
         observe(
             locationProvider.locationChange,
             Observer {
+                locationChange.call()
                 venuesList.clear()
                 page = 0
                 fetchVenues()

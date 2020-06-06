@@ -31,5 +31,6 @@
     <string name="unknown_category">Unknown Category</string>
 
     <string name="no_internet_dashboard">Oops! Your Network connection failed</string>
+    <string name="location_updating">Updating Location …</string>
 
 </resources>

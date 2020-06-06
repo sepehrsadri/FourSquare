@@ -84,6 +84,16 @@ class DashboardFragment : NavigationFragment() {
             }
         )
 
+        viewModel.locationChange.observe(
+            viewLifecycleOwner,
+            Observer {
+                requireContext().snackBar(
+                    R.string.location_updating,
+                    container
+                )
+            }
+        )
+
         val adapter =
             DashboardListAdapter(
                 viewModel
