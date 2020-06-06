@@ -5,7 +5,7 @@
     <dimen name="splash_margin">200dp</dimen>
 
     <!--Font Sizes-->
-    <dimen name="font_size_heading_1">40dp</dimen>
+    <dimen name="font_size_heading_1">30dp</dimen>
     <dimen name="font_size_heading_3">25sp</dimen>
     <dimen name="font_size_heading_4">20sp</dimen>
     <dimen name="font_size_subtitle_1">15sp</dimen>
