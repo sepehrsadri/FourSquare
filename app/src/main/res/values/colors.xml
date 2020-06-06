@@ -21,6 +21,7 @@
 
     <color name="dashboard_no_internet_background">#F66868</color>
     <color name="button_disabled_color">#7A7778</color>
+    <color name="dashboard_no_locations_text_color">#989898</color>
 
     <color name="status_bar_color">@color/black</color>
 </resources>
