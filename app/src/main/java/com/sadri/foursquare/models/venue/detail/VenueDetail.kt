@@ -33,7 +33,7 @@ data class VenueDetail(
     val canonicalUrl: String?,
     @Expose
     @SerializedName("rating")
-    val rating: Double,
+    val rating: Double?,
     @Expose
     @SerializedName("contact")
     val contact: Contact?,
