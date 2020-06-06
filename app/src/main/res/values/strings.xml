@@ -30,4 +30,8 @@
     <string name="undefined_rate">undefined</string>
     <string name="unknown_category">Unknown Category</string>
 
+    <string name="no_internet_dashboard">Oops! Your Network connection failed</string>
+    <string name="location_updating">Updating Location …</string>
+    <string name="no_locations">There is no locations to show !</string>
+
 </resources>

@@ -68,6 +68,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TextAppearance.App.Headline4.Gray">
+        <!-- Font setting doesn't work because of a bug in material components library-->
+        <item name="android:textColor">@color/dashboard_no_locations_text_color</item>
+    </style>
 
     <style name="TextAppearance.App.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
         <!--Your custom type style here-->
@@ -129,6 +133,11 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="TextAppearance.App.Subtitle3.White">
+        <!-- Font setting doesn't work because of a bug in material components library-->
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="TextAppearance.App.Subtitle2.Black">
         <!-- Font setting doesn't work because of a bug in material components library-->
         <item name="android:textColor">@color/black</item>
@@ -158,6 +167,10 @@
         <!-- Font setting doesn't work because of a bug in material components library-->
         <item name="fontFamily">@font/poppins_bold</item>
         <!--Your custom type style here-->
+    </style>
+
+    <style name="TextAppearance.App.Button.Bold.StateColor" parent="TextAppearance.App.Button">
+        <item name="android:backgroundTint">@color/button_state_list_color</item>
     </style>
 
     <style name="TextAppearance.App.Body1" parent="TextAppearance.MaterialComponents.Body1">

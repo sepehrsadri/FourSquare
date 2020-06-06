@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import com.sadri.foursquare.ui.navigation.NavigationFragment
 import com.sadri.foursquare.ui.navigation.NavigationViewModel
 import com.sadri.foursquare.ui.utils.EndlessRecyclerOnScrollListener
 import com.sadri.foursquare.ui.utils.snackBar
+import com.sadri.foursquare.utils.network.ConnectionStateMonitor
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import javax.inject.Inject
 
@@ -29,6 +31,9 @@ class DashboardFragment : NavigationFragment() {
 
     @Inject
     lateinit var permissionProvider: PermissionProvider
+
+    @Inject
+    lateinit var connectionStateMonitor: ConnectionStateMonitor
 
     private val viewModel: DashboardViewModel by viewModels { viewModelFactory }
     override fun getViewModel(): NavigationViewModel = viewModel
@@ -56,6 +61,18 @@ class DashboardFragment : NavigationFragment() {
             swipeRefreshLayout.isRefreshing = false
         }
 
+        connectionStateMonitor.hasInternet.observe(
+            viewLifecycleOwner,
+            Observer {
+                val visibility = if (it) View.GONE else View.VISIBLE
+                noInternetRoot.visibility = visibility
+            }
+        )
+
+        crossIv.setOnClickListener {
+            noInternetRoot.visibility = View.GONE
+        }
+
         viewModel.messageEvent.observe(
             viewLifecycleOwner,
             Observer {
@@ -64,6 +81,27 @@ class DashboardFragment : NavigationFragment() {
                         it,
                         container
                     )
+                }
+            }
+        )
+
+        viewModel.locationChange.observe(
+            viewLifecycleOwner,
+            Observer {
+                requireContext().snackBar(
+                    R.string.location_updating,
+                    container
+                )
+            }
+        )
+
+        viewModel.venuesListAvailability.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it) {
+                    makeListViewVisible()
+                } else {
+                    makeListViewGone()
                 }
             }
         )
@@ -87,6 +125,20 @@ class DashboardFragment : NavigationFragment() {
                 false
             )
             this.adapter = adapter
+        }
+    }
+
+    private fun makeListViewVisible() {
+        if (rcvVenues.isVisible.not() || noLocationView.isVisible) {
+            noLocationView.visibility = View.GONE
+            rcvVenues.visibility = View.VISIBLE
+        }
+    }
+
+    private fun makeListViewGone() {
+        if (noLocationView.isVisible.not() || rcvVenues.isVisible) {
+            noLocationView.visibility = View.VISIBLE
+            rcvVenues.visibility = View.GONE
         }
     }
 

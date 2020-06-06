@@ -53,6 +53,6 @@ object WordsExtractor {
         val result = stringBuilder.toString()
         val nonSpaceResult = result.replace(" ", "")
 
-        return if (nonSpaceResult.isEmpty()) text else result.trimStart()
+        return if (nonSpaceResult.isEmpty()) text else result.trimStart().trimEnd()
     }
 }
