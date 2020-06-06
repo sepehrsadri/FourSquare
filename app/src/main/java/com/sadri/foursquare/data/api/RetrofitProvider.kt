@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
 object RetrofitProvider {
-    private const val TIMEOUT_SECONDS: Long = 30
+    private const val TIMEOUT_SECONDS: Long = 15
 
     fun getRetrofit(): Retrofit {
         val httpClient = OkHttpClient.Builder()

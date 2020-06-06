@@ -1,12 +1,14 @@
 package com.sadri.foursquare.ui.utils
 
 import android.content.Context
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * Created by Sepehr Sadri on 5/31/2020.
@@ -49,4 +51,19 @@ fun TextView.setTextFromResourcesWithArg(
 ) {
     val text = context.resources.getString(res, argument)
     this.text = text
+}
+
+fun Context?.snackBar(
+    message: String,
+    container: View
+) {
+    this?.let {
+        Snackbar.make(
+            container,
+            message,
+            Snackbar.LENGTH_SHORT
+        ).setAnimationMode(
+            Snackbar.ANIMATION_MODE_FADE
+        ).show()
+    }
 }
