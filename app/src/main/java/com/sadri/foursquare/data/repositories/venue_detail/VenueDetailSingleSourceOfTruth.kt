@@ -1,6 +1,7 @@
 package com.sadri.foursquare.data.repositories.venue_detail
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataScope
 import androidx.lifecycle.liveData
 import com.sadri.foursquare.data.utils.ApiResult
 import com.sadri.foursquare.data.utils.Result
@@ -20,6 +21,9 @@ class VenueDetailSingleSourceOfTruth @Inject constructor(
     private val venueDetailApiDataSource: VenueDetailApiDataSource,
     private val venueDetailPersistentDataSource: VenueDetailPersistentDataSource
 ) {
+    /**
+     * This is right implementation of single source strategy because after fetching from api should update last data
+     */
     fun fetchVenueDetail(
         venueId: String
     ): LiveData<Result<VenueDetail>> =
@@ -28,17 +32,47 @@ class VenueDetailSingleSourceOfTruth @Inject constructor(
 
             emitSource(venueDetailPersistentDataSource.getById(venueId))
 
-            when (val apiRes = venueDetailApiDataSource.getVenueDetail(venueId)) {
-                is ApiResult.Success -> {
-                    val data = apiRes.data
-                    if (data != null) {
-                        val venueDetail = data.venueDetailResponse.venueDetail
-                        venueDetailPersistentDataSource.save(venueDetail)
+            apiRequest(venueId)
+        }
+
+    private suspend fun LiveDataScope<Result<VenueDetail>>.apiRequest(
+        venueId: String,
+        emitOnSuccess: Boolean = false
+    ) {
+        when (val apiRes = venueDetailApiDataSource.getVenueDetail(venueId)) {
+            is ApiResult.Success -> {
+                val data = apiRes.data
+                if (data != null) {
+                    val venueDetail = data.venueDetailResponse.venueDetail
+                    venueDetailPersistentDataSource.save(venueDetail)
+                    if (emitOnSuccess) {
+                        emit(Result.Success(venueDetail))
                     }
                 }
-                is ApiResult.Error -> {
-                    emit(Result.Error(apiRes.error))
-                }
             }
+            is ApiResult.Error -> {
+                emit(Result.Error(apiRes.error))
+            }
+        }
+    }
+
+    /**
+     * Due to FourSquare premium request if data offline is exist we won't request api
+     * https://developer.foursquare.com/docs/api-reference/venues/details/
+     */
+    fun limitedFetchVenueDetail(
+        venueId: String
+    ): LiveData<Result<VenueDetail>> =
+        liveData(Dispatchers.Main) {
+            emit(Result.Loading)
+
+            val source = venueDetailPersistentDataSource.getByIdInstantly(venueId)
+
+            if (source is Result.Success) {
+                emit(source)
+                return@liveData
+            }
+
+            apiRequest(venueId, true)
         }
 }
