@@ -23,18 +23,14 @@ import javax.inject.Singleton
 class ConnectionStateMonitor @Inject constructor(
     @ApplicationContext context: Context
 ) {
-    private var lastInternetAvailability = context.isNetworkAvailable()
-
     private val _hasInternet = MutableLiveData<Boolean>()
     val hasInternet: LiveData<Boolean>
         get() = _hasInternet
 
     init {
+        _hasInternet.value = context.isNetworkAvailable()
         ConnectionLiveData(context).observeForever {
-            if (lastInternetAvailability != it) {
-                _hasInternet.value = it
-                lastInternetAvailability = it
-            }
+            _hasInternet.value = it
         }
     }
 }

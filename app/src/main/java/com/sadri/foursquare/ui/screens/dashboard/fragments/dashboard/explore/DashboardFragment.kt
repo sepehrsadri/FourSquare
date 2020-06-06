@@ -14,6 +14,7 @@ import com.sadri.foursquare.ui.navigation.NavigationFragment
 import com.sadri.foursquare.ui.navigation.NavigationViewModel
 import com.sadri.foursquare.ui.utils.EndlessRecyclerOnScrollListener
 import com.sadri.foursquare.ui.utils.snackBar
+import com.sadri.foursquare.utils.network.ConnectionStateMonitor
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import javax.inject.Inject
 
@@ -29,6 +30,9 @@ class DashboardFragment : NavigationFragment() {
 
     @Inject
     lateinit var permissionProvider: PermissionProvider
+
+    @Inject
+    lateinit var connectionStateMonitor: ConnectionStateMonitor
 
     private val viewModel: DashboardViewModel by viewModels { viewModelFactory }
     override fun getViewModel(): NavigationViewModel = viewModel
@@ -54,6 +58,18 @@ class DashboardFragment : NavigationFragment() {
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.refreshExplores()
             swipeRefreshLayout.isRefreshing = false
+        }
+
+        connectionStateMonitor.hasInternet.observe(
+            viewLifecycleOwner,
+            Observer {
+                val visibility = if (it) View.GONE else View.VISIBLE
+                noInternetRoot.visibility = visibility
+            }
+        )
+
+        crossIv.setOnClickListener {
+            noInternetRoot.visibility = View.GONE
         }
 
         viewModel.messageEvent.observe(
