@@ -67,3 +67,18 @@ fun Context?.snackBar(
         ).show()
     }
 }
+
+fun Context?.snackBar(
+    message: Int,
+    container: View
+) {
+    this?.let {
+        Snackbar.make(
+            container,
+            message,
+            Snackbar.LENGTH_SHORT
+        ).setAnimationMode(
+            Snackbar.ANIMATION_MODE_FADE
+        ).show()
+    }
+}
