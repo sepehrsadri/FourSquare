@@ -47,4 +47,9 @@ class VenueDetailPersistentDataSource @Inject constructor(
         withContext(Dispatchers.IO) {
             venueDetailDao.clear()
         }
+
+    suspend fun save(venueDetail: VenueDetail) =
+        withContext(Dispatchers.IO) {
+            venueDetailDao.insert(venueDetail)
+        }
 }
