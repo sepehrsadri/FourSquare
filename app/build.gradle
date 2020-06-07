@@ -154,3 +154,9 @@ afterEvaluate {
             tasks."compile${flavorName}ReleaseSources".dependsOn "ktlint${flavorName}ReleaseCheck"
     }
 }
+
+tasks.whenTaskAdded { task ->
+    if (task.name.contains("Test")) {
+        task.enabled = false
+    }
+}
