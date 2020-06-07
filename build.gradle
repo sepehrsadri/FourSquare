@@ -57,7 +57,6 @@ ext {
     testJUnit = '4.12'
     testAndroidXJUnit = '1.1.1'
     testEspresso = '3.2.0'
-    junit = '5.6.0'
     mockito = '2.2.0'
     mockitoInline = '3.3.0'
 

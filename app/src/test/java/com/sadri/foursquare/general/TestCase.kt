@@ -1,8 +1,10 @@
 package com.sadri.foursquare.general
 
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.extension.ExtendWith
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
 import org.mockito.MockitoAnnotations
 
 /**
@@ -11,16 +13,24 @@ import org.mockito.MockitoAnnotations
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-@ExtendWith(InstantExecutorExtension::class)
 internal abstract class TestCase {
+    /**
+     * this rule provide main looper for testing live data
+     */
+    @get:Rule
+    val instantExecutorRule = InstantTaskExecutorRule()
+
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val uiThreadRule = MainCoroutineRule()
 
     init {
         MockitoAnnotations.initMocks(this)
     }
 
-    @AfterEach
+    @After
     abstract fun tearDown()
 
-    @BeforeEach
+    @Before
     abstract fun setup()
 }
