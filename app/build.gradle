@@ -56,6 +56,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+    }
 }
 
 dependencies {
@@ -110,12 +117,11 @@ dependencies {
     testImplementation "junit:junit:$rootProject.testJUnit"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testAndroidXJUnit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.testEspresso"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.junit"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.junit"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:$rootProject.junit"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$rootProject.mockito"
     testImplementation "org.mockito:mockito-inline:$rootProject.mockitoInline"
     testImplementation "android.arch.core:core-testing:$rootProject.androidX.lifecycle"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutines"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kaptTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
 
