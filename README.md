@@ -1,8 +1,9 @@
 Four Square
 =========================
 
-A FourSquare app is Sepehr Sadri's project assignment for applying as an android developer position at Caffe bazaar.
-
+FourSquare - find nearby places around you!
+Explore places using your current location with FourSquare API.
+Update places detecting your location change.
 
 Introduction
 ------------
@@ -24,6 +25,17 @@ Navigation component manages in-app navigation.
 Dagger 2 is used for dependency injection.
 
 A sample app consist of 3 screens: List of Venues, Permission screen and Venue details.
+
+UI/UX Design
+------------
+Designed by [Masoome Hadiyan](https://dribbble.com/Masoom_hd)
+UI/UX Design [fourSquareDesign](https://dribbble.com/shots/12126567-4Square-Navigation-App?utm_source=Clipboard_Shot&utm_campaign=Masoom_hd&utm_content=4Square%20-%20Navigation%20App&utm_medium=Social_Share)
+
+Screenshots
+-----------
+
+![Group1](screenshots/group_1.jpg "Group 1")
+![Group2](screenshots/group_2.jpg "Group 2")
 
 Libraries Used
 --------------
@@ -52,3 +64,8 @@ Libraries Used
   * Timber - A logger.
 
 App uses [ktlint](https://ktlint.github.io/) to enforce Kotlin coding styles.
+
+# RoadMap
+   * Migrate main dashboard page to show places on map.
+   * Migrate data pagination to use android paging library.
+   * Migrate data source models to Flow instead of LiveData.
