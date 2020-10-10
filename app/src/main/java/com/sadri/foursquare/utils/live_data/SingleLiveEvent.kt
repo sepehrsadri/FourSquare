@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  *
  * https://github.com/android/architecture-samples/blob/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/SingleLiveEvent.java
  */
-class SingleLiveEvent<T> : MutableLiveData<T?> {
+class SingleLiveEvent<T> : MutableLiveData<T> {
     private val pending: AtomicBoolean = AtomicBoolean(false)
 
     /**
@@ -35,7 +35,7 @@ class SingleLiveEvent<T> : MutableLiveData<T?> {
     constructor() : super()
 
     @MainThread
-    override fun observe(owner: LifecycleOwner, observer: Observer<in T?>) {
+    override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
         if (hasActiveObservers()) {
             Timber.w(
                 "Multiple observers registered but only one will be notified of changes."

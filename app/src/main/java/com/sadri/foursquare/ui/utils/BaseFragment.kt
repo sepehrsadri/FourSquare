@@ -47,11 +47,11 @@ abstract class BaseFragment : DaggerFragment() {
         }
     }
 
-    private fun hideLoading() {
+    protected fun hideLoading() {
         loadingDialog?.apply { hide() }
     }
 
-    private fun showLoading() {
+    protected fun showLoading() {
         if (loadingDialog == null) {
             loadingDialog = FullScreenLoadingDialog.getNewInstance(requireContext())
         }

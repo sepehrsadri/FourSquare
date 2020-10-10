@@ -13,4 +13,5 @@ sealed class NavigationCommand {
     object Back : NavigationCommand()
     data class BackTo(val destinationId: Int) : NavigationCommand()
     object ToRoot : NavigationCommand()
+    object Nothing : NavigationCommand()
 }
