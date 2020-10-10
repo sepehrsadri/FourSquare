@@ -20,28 +20,37 @@ abstract class NavigationFragment : BaseFragment() {
         getViewModel()?.navigationCommands?.observe(
             viewLifecycleOwner,
             Observer {
-                val navController = findNavController()
-                when (it) {
-                    is NavigationCommand.To -> navController.navigate(
-                        it.directions
-                    )
-                    is NavigationCommand.Back -> {
-                        if (navController.popBackStack().not()) {
-                            // We are on rootView. So we try to pass action to parent Activity
-                            requireActivity().finish()
-                        }
-                    }
-                    is NavigationCommand.BackTo -> navController.popBackStack(
-                        it.destinationId,
-                        false
-                    )
-                    is NavigationCommand.ToRoot -> navController.popBackStack(
-                        navController.backStack.first.destination.id,
-                        true
-                    )
-                }
+                navigate(it)
             }
         )
+    }
+
+    protected fun navigate(
+        it: NavigationCommand
+    ) {
+        val navController = findNavController()
+        when (it) {
+            is NavigationCommand.To -> navController.navigate(
+                it.directions
+            )
+            is NavigationCommand.Back -> {
+                if (navController.popBackStack().not()) {
+                    // We are on rootView. So we try to pass action to parent Activity
+                    requireActivity().finish()
+                }
+            }
+            is NavigationCommand.BackTo -> navController.popBackStack(
+                it.destinationId,
+                false
+            )
+            is NavigationCommand.ToRoot -> navController.popBackStack(
+                navController.backStack.first.destination.id,
+                true
+            )
+            else -> {
+                // Nothing
+            }
+        }
     }
 
     fun <T> getNavigationResultLiveData(sharedName: String): MutableLiveData<T> {
