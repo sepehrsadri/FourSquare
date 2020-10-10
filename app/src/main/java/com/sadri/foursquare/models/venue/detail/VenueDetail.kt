@@ -24,7 +24,7 @@ data class VenueDetail(
     val name: String,
     @Expose
     @SerializedName("location")
-    val location: Location,
+    val location: Location?,
     @Expose
     @SerializedName("categories")
     val categories: List<Category>,

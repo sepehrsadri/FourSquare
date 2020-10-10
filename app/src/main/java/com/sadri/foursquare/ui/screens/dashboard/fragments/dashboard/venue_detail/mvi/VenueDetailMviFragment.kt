@@ -1,4 +1,4 @@
-package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail
+package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.mvi
 
 import android.content.Intent
 import android.net.Uri
@@ -7,31 +7,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.sadri.foursquare.R
 import com.sadri.foursquare.models.MyPoint
-import com.sadri.foursquare.ui.navigation.NavigationFragment
-import com.sadri.foursquare.ui.navigation.NavigationViewModel
+import com.sadri.foursquare.ui.navigation.NavigationCommand
+import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.*
+import com.sadri.foursquare.ui.utils.mvi.BaseMviFragment
 import com.sadri.foursquare.ui.utils.setSrcCompat
 import com.sadri.foursquare.ui.utils.snackBar
 import kotlinx.android.synthetic.main.fragment_venue_detail.*
 import timber.log.Timber
 import javax.inject.Inject
 
-/**
- * Created by Sepehr Sadri on 5/31/2020.
- * sepehrsadri@gmail.com
- * Tehran, Iran.
- * Copyright © 2020 by Sepehr Sadri. All rights reserved.
- */
-class VenueDetailFragment : NavigationFragment() {
+class VenueDetailMviFragment :
+    BaseMviFragment<VenueDetailViewState, VenueDetailIntent, VenueDetailMviViewModel>() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: VenueDetailViewModel by viewModels { viewModelFactory }
+    override val viewModel: VenueDetailMviViewModel by viewModels { viewModelFactory }
 
-    override fun getViewModel(): NavigationViewModel = viewModel
+    private val args: VenueDetailMviFragmentArgs by navArgs()
+
+    override fun render(viewState: VenueDetailViewState) {
+        super.render(viewState)
+        updateUI(viewState.result)
+    }
 
     private lateinit var callIntent: CallToAction
     private lateinit var locationIntent: CallToAction
@@ -46,16 +46,14 @@ class VenueDetailFragment : NavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.fetchVenueDetail(args.venueId)
+        viewModel.dispatch(VenueDetailIntent.Fetch(args.venueId))
 
         addViewsListeners()
-
-        addObservers()
     }
 
     private fun addViewsListeners() {
         backIv.setOnClickListener {
-            viewModel.onBackButtonClick()
+            navigate(NavigationCommand.Back)
         }
 
         callBtn.setOnClickListener {
@@ -89,27 +87,6 @@ class VenueDetailFragment : NavigationFragment() {
         requireContext().snackBar(
             R.string.error_unknown,
             container
-        )
-    }
-
-    private fun addObservers() {
-        viewModel.messageEvent.observe(
-            viewLifecycleOwner,
-            Observer {
-                it?.let {
-                    requireContext().snackBar(
-                        it,
-                        container
-                    )
-                }
-            }
-        )
-
-        viewModel.venueDetail.observe(
-            viewLifecycleOwner,
-            Observer {
-                updateUI(it)
-            }
         )
     }
 
@@ -195,4 +172,5 @@ class VenueDetailFragment : NavigationFragment() {
             PHONE_CALL_CTA_TAG
         )
     }
+
 }
