@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/venueDetailFragment"
-        android:name="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.VenueDetailFragment"
+        android:name="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.mvi.VenueDetailMviFragment"
         android:label="venue_detail_fragment"
         tools:layout="@layout/fragment_venue_detail">
         <argument

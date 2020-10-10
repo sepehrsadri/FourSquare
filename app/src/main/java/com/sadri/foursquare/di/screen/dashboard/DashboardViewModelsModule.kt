@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.sadri.foursquare.di.utils.view_model.ViewModelKey
 import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore.DashboardViewModel
 import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.VenueDetailViewModel
+import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.mvi.VenueDetailMviViewModel
 import com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierViewModel
 import dagger.Binds
 import dagger.Module
@@ -33,6 +34,6 @@ abstract class DashboardViewModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(VenueDetailViewModel::class)
-    abstract fun bindVenueDetailViewModel(viewModel: VenueDetailViewModel): ViewModel
+    @ViewModelKey(VenueDetailMviViewModel::class)
+    abstract fun bindVenueDetailViewModel(viewModel: VenueDetailMviViewModel): ViewModel
 }

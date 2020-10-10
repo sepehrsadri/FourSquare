@@ -18,7 +18,22 @@ data class VenueDetailDataModel(
     val direction: Direction,
     val description: Description,
     val likes: Like
-)
+) {
+    companion object {
+        fun stable(): VenueDetailDataModel {
+            return VenueDetailDataModel(
+                "",
+                Category.Empty,
+                Rate.Empty,
+                AvailabilityStatus.Undefined,
+                PhoneContact.Disabled,
+                Direction.Empty,
+                Description.Empty,
+                Like.Empty
+            )
+        }
+    }
+}
 
 sealed class AvailabilityStatus(
     val icon: Int,
@@ -35,10 +50,14 @@ sealed class PhoneContact {
     object Disabled : PhoneContact()
 }
 
-data class Direction(
-    val address: String,
-    val myPoint: MyPoint
-)
+sealed class Direction {
+    data class Available(
+        val address: String,
+        val myPoint: MyPoint
+    ) : Direction()
+
+    object Empty : Direction()
+}
 
 sealed class Description(val defaultText: Int = R.string.empty_description) {
     data class Available(val text: String) : Description()
