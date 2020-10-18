@@ -3,6 +3,8 @@ package com.sadri.foursquare.ui.utils.mvi
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.sadri.foursquare.ui.utils.BaseActivity
+import com.sadri.foursquare.ui.utils.mvi.model.MviIntent
+import com.sadri.foursquare.ui.utils.mvi.model.MviViewState
 import timber.log.Timber
 
 abstract class BaseMviActivity<STATE : MviViewState, INTENT : MviIntent, ViewModel : BaseMviViewModel<STATE, INTENT, *>> :

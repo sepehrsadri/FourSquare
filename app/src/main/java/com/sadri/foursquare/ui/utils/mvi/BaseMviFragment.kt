@@ -4,15 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.lifecycle.Observer
-import com.sadri.foursquare.ui.navigation.NavigationCommand
-import com.sadri.foursquare.ui.navigation.NavigationFragment
-import com.sadri.foursquare.ui.navigation.NavigationViewModel
-import com.sadri.foursquare.ui.utils.snackBar
-import kotlinx.android.synthetic.main.fragment_venue_detail.*
+import com.sadri.foursquare.ui.utils.BaseFragment
+import com.sadri.foursquare.ui.utils.mvi.model.BaseViewState
+import com.sadri.foursquare.ui.utils.mvi.model.MviIntent
+import com.sadri.foursquare.ui.utils.renderDefaults
 import timber.log.Timber
 
 abstract class BaseMviFragment<STATE : BaseViewState, INTENT : MviIntent, ViewModel : BaseMviViewModel<STATE, INTENT, *>> :
-    NavigationFragment() {
+    BaseFragment() {
 
     abstract val viewModel: ViewModel
 
@@ -30,35 +29,6 @@ abstract class BaseMviFragment<STATE : BaseViewState, INTENT : MviIntent, ViewMo
 
     @CallSuper
     open fun render(viewState: STATE) {
-        renderLoading(viewState.base)
-        renderCoordinate(viewState.base)
-        renderError(viewState.base)
-    }
-
-    override fun getViewModel(): NavigationViewModel? {
-        return null
-    }
-
-    private fun renderError(baseState: BaseState) {
-        if (baseState.error is BaseState.ErrorState.String) {
-            requireContext().snackBar(
-                baseState.error.snackBarMessageString,
-                container
-            )
-        }
-    }
-
-    private fun renderLoading(baseState: BaseState) {
-        if (baseState.showLoading) {
-            showLoading()
-        } else {
-            hideLoading()
-        }
-    }
-
-    private fun renderCoordinate(baseState: BaseState) {
-        if (baseState.coordinate !is NavigationCommand.Nothing) {
-            navigate(baseState.coordinate)
-        }
+        renderDefaults(viewState)
     }
 }

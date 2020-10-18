@@ -2,6 +2,9 @@ package com.sadri.foursquare.ui.utils.mvi
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.*
+import com.sadri.foursquare.ui.utils.mvi.model.MviIntent
+import com.sadri.foursquare.ui.utils.mvi.model.MviResult
+import com.sadri.foursquare.ui.utils.mvi.model.MviViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
