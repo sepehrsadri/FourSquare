@@ -2,10 +2,9 @@ package com.sadri.foursquare.di.screen.dashboard
 
 import androidx.lifecycle.ViewModel
 import com.sadri.foursquare.di.utils.view_model.ViewModelKey
-import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore.DashboardViewModel
-import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.VenueDetailViewModel
-import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.mvi.VenueDetailMviViewModel
-import com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierViewModel
+import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore.DashboardMviViewModel
+import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.VenueDetailMviViewModel
+import com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierMviViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -22,14 +21,14 @@ abstract class DashboardViewModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(DashboardViewModel::class)
-    abstract fun bindMainDashboardViewModel(viewModel: DashboardViewModel): ViewModel
+    @ViewModelKey(DashboardMviViewModel::class)
+    abstract fun bindMainDashboardViewModel(viewModel: DashboardMviViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(RequirementSatisfierViewModel::class)
+    @ViewModelKey(RequirementSatisfierMviViewModel::class)
     abstract fun bindRequirementSatisfierViewModel(
-        viewModel: RequirementSatisfierViewModel
+        viewModel: RequirementSatisfierMviViewModel
     ): ViewModel
 
     @Binds
