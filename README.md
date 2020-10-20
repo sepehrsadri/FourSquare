@@ -1,14 +1,12 @@
-Four Square
+Android-MVI-Sample-FourSquare
 =========================
 
-FourSquare - find nearby places around you!
-Explore places using your current location with FourSquare API.
-Update places detecting your location change.
+Android-MVI-Sample-FourSquare forked project from [Foursquare](https://github.com/sepehrs3ep/FourSquare) that implemented the whole project via MVI architecture
 
 Introduction
 ------------
 
-The application uses Clean Architecture based on MVVM and Repository patterns.
+The application uses Clean Architecture and Respository Pattern on Core Layer and  MVI on Presentation Layer.
 
 The application is written entirely in Kotlin.
 
