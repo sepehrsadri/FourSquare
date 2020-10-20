@@ -1,5 +1,6 @@
 package com.sadri.foursquare.ui.screens.requirement_satisfier
 
+import android.content.res.Resources
 import com.sadri.foursquare.R
 
 /**
@@ -26,5 +27,12 @@ sealed class RequirementSatisfierDataModel(
         R.string.location_bio,
         R.string.location_body,
         R.string.location_action
+    )
+
+    object Empty : RequirementSatisfierDataModel(
+        Resources.ID_NULL,
+        R.string.empty,
+        R.string.empty,
+        R.string.empty
     )
 }

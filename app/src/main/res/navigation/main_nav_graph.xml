@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/requirementSatisfierFragment"
-        android:name="com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierFragment"
+        android:name="com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierMviFragment"
         android:label="requirement_satisfier_fragment"
         tools:layout="@layout/fragment_requirement_satisfier" />
 
