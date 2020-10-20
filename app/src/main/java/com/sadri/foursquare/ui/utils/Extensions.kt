@@ -1,6 +1,8 @@
 package com.sadri.foursquare.ui.utils
 
 import android.content.Context
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -9,6 +11,10 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import com.sadri.foursquare.ui.utils.mvi.BaseState
+import com.sadri.foursquare.ui.utils.mvi.TAG
+import com.sadri.foursquare.ui.utils.mvi.model.BaseViewState
+import timber.log.Timber
 
 /**
  * Created by Sepehr Sadri on 5/31/2020.
@@ -32,11 +38,15 @@ fun AppCompatImageView.setSrcCompat(
     @DrawableRes icon: Int
 ) {
     this.setImageDrawable(
-        ContextCompat.getDrawable(
-            this.context,
-            icon
-        )
+        icon.getDrawable(this.context)
     )
+}
+
+fun Int.getDrawable(context: Context): Drawable? {
+    return when (this) {
+        Resources.ID_NULL -> null
+        else -> ContextCompat.getDrawable(context, this)
+    }
 }
 
 fun TextView.setTextFromResources(
@@ -81,4 +91,34 @@ fun Context?.snackBar(
             Snackbar.ANIMATION_MODE_FADE
         ).show()
     }
+}
+
+fun BaseFragment.renderDefaults(baseViewState: BaseViewState) {
+    val base = baseViewState.base
+
+    when (val msg = base.message) {
+        is BaseState.Message.SnackBarString -> {
+            requireContext().snackBar(
+                msg.snackBarMessageString,
+                container = container()
+            )
+        }
+        is BaseState.Message.SnackBarRes -> {
+            requireContext().snackBar(
+                msg.snackBarMessage,
+                container = container()
+            )
+        }
+        is BaseState.Message.ToastString -> {
+            requireContext().toast(msg.message)
+        }
+        is BaseState.Message.ToastRes -> {
+            requireContext().toast(msg.message)
+        }
+        is BaseState.Message.Disabled -> {
+            Timber.d("$TAG Render Base state Message with disabled value so ignored")
+        }
+    }
+
+    handleLoadingState(base.showLoading)
 }

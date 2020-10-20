@@ -1,5 +1,8 @@
 package com.sadri.foursquare.ui.utils.mvi
 
+import com.sadri.foursquare.ui.utils.mvi.model.MviResult
+import com.sadri.foursquare.ui.utils.mvi.model.MviViewState
+
 internal val Any.TAG: String
     get() {
         return if (!javaClass.isAnonymousClass) {

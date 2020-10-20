@@ -1,7 +1,5 @@
 package com.sadri.foursquare.ui.screens.requirement_satisfier
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -12,9 +10,10 @@ import com.sadri.foursquare.R
 import com.sadri.foursquare.components.permission.PermissionProvider
 import com.sadri.foursquare.components.permission.PermissionResult
 import com.sadri.foursquare.ui.navigation.NavigationCommand
-import com.sadri.foursquare.ui.utils.owner_view_model.OwnerViewModel
+import com.sadri.foursquare.ui.utils.Coordinator
+import com.sadri.foursquare.ui.utils.mvi.BaseMviViewModelContainsOwner
+import com.sadri.foursquare.ui.utils.mvi.BaseState
 import com.sadri.foursquare.utils.gps.GpsStateMonitor
-import com.sadri.foursquare.utils.live_data.SingleLiveEvent
 import javax.inject.Inject
 
 /**
@@ -23,20 +22,57 @@ import javax.inject.Inject
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-class RequirementSatisfierViewModel @Inject constructor(
+class RequirementSatisfierMviViewModel @Inject constructor(
     private val permissionProvider: PermissionProvider,
+    private val coordinator: Coordinator,
     gpsStateMonitor: GpsStateMonitor
-) : OwnerViewModel<RequirementSatisfierViewModelOwner>() {
-
-    val requestPermissionSignal = SingleLiveEvent<Nothing>()
-    val toast = SingleLiveEvent<Int>()
-    val requestLocationResolutionSignal = SingleLiveEvent<ResolvableApiException>()
-
-    private val _dataModel = MutableLiveData<RequirementSatisfierDataModel>()
-    val dataModel: LiveData<RequirementSatisfierDataModel>
-        get() = _dataModel
+) : BaseMviViewModelContainsOwner<RequirementSatisfierViewModelOwner, RequirementSatisfierViewState, RequirementSatisfierIntent, RequirementSatisfierResult>(
+    RequirementSatisfierViewState()
+) {
 
     private var isPermissionDenied = false
+
+    override fun reduce(
+        previousState: RequirementSatisfierViewState,
+        result: RequirementSatisfierResult
+    ): RequirementSatisfierViewState =
+        when (result) {
+            RequirementSatisfierResult.RequestGps -> {
+                previousState.copy(
+                    base = BaseState.stable(),
+                    requestPermission = RequestPermission.GPS
+                )
+            }
+            is RequirementSatisfierResult.RequestLocation -> {
+                previousState.copy(
+                    base = BaseState.stable(),
+                    requestPermission = RequestPermission.Location(result.exception)
+                )
+            }
+            is RequirementSatisfierResult.Toast -> {
+                previousState.copy(
+                    base = BaseState.showToast(result.message),
+                    requestPermission = RequestPermission.Nothing
+                )
+            }
+            is RequirementSatisfierResult.Result -> {
+                previousState.copy(
+                    base = BaseState.stable(),
+                    dataModel = result.res,
+                    requestPermission = RequestPermission.Nothing
+                )
+            }
+        }
+
+    override fun dispatch(intent: RequirementSatisfierIntent) {
+        super.dispatch(intent)
+        when (intent) {
+            RequirementSatisfierIntent.RequestPermissionAndLocationSwitch -> {
+                requestPermissionAndLocationSwitch()
+            }
+        }
+    }
+
 
     init {
         observeWithInitUpdate(
@@ -77,10 +113,10 @@ class RequirementSatisfierViewModel @Inject constructor(
             else -> RequirementSatisfierDataModel.Permission
         }
 
-        _dataModel.value = dataModel
+        newResult(RequirementSatisfierResult.Result(dataModel))
     }
 
-    fun requestPermissionAndLocationSwitch() {
+    private fun requestPermissionAndLocationSwitch() {
         if (checkAvailability()) {
             return
         }
@@ -91,7 +127,7 @@ class RequirementSatisfierViewModel @Inject constructor(
         }
 
         if (permissionProvider.hasLocationPermission().not()) {
-            requestPermissionSignal.call()
+            newResult(RequirementSatisfierResult.RequestGps)
             return
         }
 
@@ -104,7 +140,7 @@ class RequirementSatisfierViewModel @Inject constructor(
 
     private fun checkAvailability(): Boolean {
         if (permissionProvider.isLocationAvailableAndAccessible()) {
-            navigate(NavigationCommand.BackTo(R.id.dashboardFragment))
+            coordinator.navigate(NavigationCommand.BackTo(R.id.dashboardFragment))
             return true
         }
         return false
@@ -130,8 +166,7 @@ class RequirementSatisfierViewModel @Inject constructor(
                 when (apiException.statusCode) {
 
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                        requestLocationResolutionSignal.value =
-                            apiException as ResolvableApiException
+                        newResult(RequirementSatisfierResult.RequestLocation(apiException as ResolvableApiException))
                     }
 
                     LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
@@ -143,6 +178,7 @@ class RequirementSatisfierViewModel @Inject constructor(
     }
 
     private fun showToast(textId: Int) {
-        toast.value = textId
+        newResult(RequirementSatisfierResult.Toast(textId))
     }
+
 }

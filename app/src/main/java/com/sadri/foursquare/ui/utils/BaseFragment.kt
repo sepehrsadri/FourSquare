@@ -1,10 +1,15 @@
 package com.sadri.foursquare.ui.utils
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.sadri.foursquare.ui.navigation.NavigationCommand
 import com.sadri.foursquare.utils.isFalseOrNull
-import com.sadri.foursquare.utils.observeWithInitUpdate
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 /**
  * Created by Sepehr Sadri on 5/31/2020.
@@ -19,27 +24,19 @@ abstract class BaseFragment : DaggerFragment() {
 
     private var loadingDialog: FullScreenLoadingDialog? = null
 
-    fun showKeyboard() {
+    protected fun showKeyboard() {
         view?.findFocus()?.let {
             KeyboardUtils.showSoftKeyboard(it)
         }
     }
 
-    fun hideKeyboard() {
+    protected fun hideKeyboard() {
         view?.findFocus()?.let {
             KeyboardUtils.hideSoftKeyboard(it)
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        getViewModel()?.fullscreenLoading?.observeWithInitUpdate(viewLifecycleOwner, Observer {
-            handleLoadingState(it)
-        })
-    }
-
-    private fun handleLoadingState(loading: Boolean?) {
+    fun handleLoadingState(loading: Boolean?) {
         if (loading.isFalseOrNull()) {
             hideLoading()
         } else {
@@ -72,5 +69,66 @@ abstract class BaseFragment : DaggerFragment() {
         super.onDestroyView()
     }
 
-    abstract fun getViewModel(): BaseViewModel?
+    @Inject
+    lateinit var coordinator: Coordinator
+
+    @SuppressLint("RestrictedApi")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        coordinator.navigationCommands.observe(
+            viewLifecycleOwner,
+            Observer {
+                navigate(it)
+            }
+        )
+    }
+
+    protected fun navigate(
+        it: NavigationCommand
+    ) {
+        val navController = findNavController()
+        when (it) {
+            is NavigationCommand.To -> navController.navigate(
+                it.directions
+            )
+            is NavigationCommand.Back -> {
+                if (navController.popBackStack().not()) {
+                    // We are on rootView. So we try to pass action to parent Activity
+                    requireActivity().finish()
+                }
+            }
+            is NavigationCommand.BackTo -> navController.popBackStack(
+                it.destinationId,
+                false
+            )
+            is NavigationCommand.ToRoot -> navController.popBackStack(
+                navController.backStack.first.destination.id,
+                true
+            )
+            else -> {
+                // Nothing
+            }
+        }
+    }
+
+    fun <T> getNavigationResultLiveData(sharedName: String): MutableLiveData<T> {
+        return findNavController().currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<T>(sharedName)
+            ?: error("SharedLiveData does not exists")
+    }
+
+    fun <T> removeNavigationResultLiveData(sharedName: String) {
+        findNavController().currentBackStackEntry
+            ?.savedStateHandle
+            ?.remove<T>(sharedName)
+    }
+
+    fun <T> setNavigationResultData(sharedName: String, value: T?) {
+        findNavController().previousBackStackEntry
+            ?.savedStateHandle
+            ?.set(sharedName, value)
+    }
+
+    abstract fun container(): View
 }

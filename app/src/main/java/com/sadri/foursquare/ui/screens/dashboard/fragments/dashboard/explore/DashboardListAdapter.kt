@@ -17,7 +17,7 @@ import com.sadri.foursquare.utils.extractEnDigits
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
 class DashboardListAdapter(
-    private val dashboardViewModel: DashboardViewModel
+    private val dashboardListAdapterContract: DashboardListAdapterContract
 ) : GenericListAdapter<Venue, BindingViewHolder<Venue>>(VenueDiffCallback()) {
 
     override fun getLayoutId(position: Int, obj: Venue) =
@@ -26,13 +26,13 @@ class DashboardListAdapter(
     override fun getViewHolder(view: View, viewType: Int): BindingViewHolder<Venue> {
         return DashboardListViewHolder(
             view,
-            dashboardViewModel
+            dashboardListAdapterContract
         )
     }
 
     private class DashboardListViewHolder(
         private val item: View,
-        private val dashboardViewModel: DashboardViewModel
+        private val dashboardListAdapterContract: DashboardListAdapterContract
     ) : BindingViewHolder<Venue>(item) {
         private val txtVenueName = item.findViewById<MaterialTextView>(
             R.id.venueNameTv
@@ -49,7 +49,7 @@ class DashboardListAdapter(
         private lateinit var data: Venue
 
         private val clickListener = View.OnClickListener {
-            dashboardViewModel.onVenueClick(data)
+            dashboardListAdapterContract.onVenueClick(data)
         }
 
         override fun bind(data: Venue) {

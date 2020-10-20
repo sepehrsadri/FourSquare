@@ -11,21 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sadri.foursquare.R
 import com.sadri.foursquare.components.permission.PermissionProvider
-import com.sadri.foursquare.ui.navigation.NavigationFragment
-import com.sadri.foursquare.ui.navigation.NavigationViewModel
 import com.sadri.foursquare.ui.utils.EndlessRecyclerOnScrollListener
-import com.sadri.foursquare.ui.utils.snackBar
+import com.sadri.foursquare.ui.utils.mvi.BaseMviFragment
 import com.sadri.foursquare.utils.network.ConnectionStateMonitor
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import javax.inject.Inject
 
-/**
- * Created by Sepehr Sadri on 5/31/2020.
- * sepehrsadri@gmail.com
- * Tehran, Iran.
- * Copyright © 2020 by Sepehr Sadri. All rights reserved.
- */
-class DashboardFragment : NavigationFragment() {
+class DashboardMviFragment :
+    BaseMviFragment<DashboardViewState, DashboardIntent, DashboardMviViewModel>() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -35,15 +28,18 @@ class DashboardFragment : NavigationFragment() {
     @Inject
     lateinit var connectionStateMonitor: ConnectionStateMonitor
 
-    private val viewModel: DashboardViewModel by viewModels { viewModelFactory }
-    override fun getViewModel(): NavigationViewModel = viewModel
+    override val viewModel: DashboardMviViewModel by viewModels { viewModelFactory }
+
+    private lateinit var adapter: DashboardListAdapter
 
     private val recyclerViewScrollViewListener =
         object : EndlessRecyclerOnScrollListener() {
             override fun onLoadMore() {
-                viewModel.onScroll()
+                viewModel.dispatch(DashboardIntent.Scroll)
             }
         }
+
+    override fun container(): View = container
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +53,7 @@ class DashboardFragment : NavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshExplores()
+            viewModel.dispatch(DashboardIntent.RefreshExplores)
             swipeRefreshLayout.isRefreshing = false
         }
 
@@ -73,58 +69,32 @@ class DashboardFragment : NavigationFragment() {
             noInternetRoot.visibility = View.GONE
         }
 
-        viewModel.messageEvent.observe(
-            viewLifecycleOwner,
-            Observer {
-                it?.let {
-                    requireContext().snackBar(
-                        it,
-                        container
-                    )
-                }
-            }
-        )
-
-        viewModel.locationChange.observe(
-            viewLifecycleOwner,
-            Observer {
-                requireContext().snackBar(
-                    R.string.location_updating,
-                    container
-                )
-            }
-        )
-
-        viewModel.venuesListAvailability.observe(
-            viewLifecycleOwner,
-            Observer {
-                if (it) {
-                    makeListViewVisible()
-                } else {
-                    makeListViewGone()
-                }
-            }
-        )
-
-        val adapter =
+        this.adapter =
             DashboardListAdapter(
                 viewModel
             )
 
-        viewModel.venues.observe(
-            viewLifecycleOwner,
-            Observer {
-                adapter.submitList(it)
-            }
+        rcvVenues.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.VERTICAL,
+            false
         )
+        rcvVenues.adapter = this.adapter
+    }
 
-        with(rcvVenues) {
-            this.layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.VERTICAL,
-                false
-            )
-            this.adapter = adapter
+    override fun render(viewState: DashboardViewState) {
+        super.render(viewState)
+
+        with(viewState) {
+            if (venuesListAvailability) {
+                makeListViewVisible()
+            } else {
+                makeListViewGone()
+            }
+
+            if (venueListChanged) {
+                adapter.submitList(venuesList)
+            }
         }
     }
 
@@ -146,7 +116,7 @@ class DashboardFragment : NavigationFragment() {
         super.onStart()
         rcvVenues.addOnScrollListener(recyclerViewScrollViewListener)
         if (permissionProvider.isLocationAvailableAndAccessible()) {
-            viewModel.initFetch()
+            viewModel.dispatch(DashboardIntent.Init)
         }
     }
 

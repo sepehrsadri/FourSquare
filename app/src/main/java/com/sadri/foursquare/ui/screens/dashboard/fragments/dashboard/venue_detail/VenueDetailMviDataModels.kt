@@ -1,11 +1,10 @@
-package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.mvi
+package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail
 
 import com.sadri.foursquare.models.venue.detail.VenueDetail
-import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.VenueDetailDataModel
 import com.sadri.foursquare.ui.utils.mvi.BaseState
-import com.sadri.foursquare.ui.utils.mvi.BaseViewState
-import com.sadri.foursquare.ui.utils.mvi.MviIntent
-import com.sadri.foursquare.ui.utils.mvi.MviResult
+import com.sadri.foursquare.ui.utils.mvi.model.BaseViewState
+import com.sadri.foursquare.ui.utils.mvi.model.MviIntent
+import com.sadri.foursquare.ui.utils.mvi.model.MviResult
 
 data class VenueDetailViewState(
     override val base: BaseState,

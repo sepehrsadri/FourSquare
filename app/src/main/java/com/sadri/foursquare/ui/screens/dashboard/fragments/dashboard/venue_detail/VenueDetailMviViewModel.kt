@@ -1,9 +1,8 @@
-package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.mvi
+package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail
 
 import androidx.lifecycle.Observer
 import com.sadri.foursquare.data.repositories.venue_detail.VenueDetailSingleSourceOfTruth
 import com.sadri.foursquare.data.utils.Result
-import com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.convertToUiDataModel
 import com.sadri.foursquare.ui.utils.mvi.BaseMviViewModel
 import com.sadri.foursquare.ui.utils.mvi.BaseState
 import javax.inject.Inject
@@ -20,7 +19,7 @@ class VenueDetailMviViewModel @Inject constructor(
         when (result) {
             is VenueDetailResult.Error -> {
                 previousState.copy(
-                    base = BaseState.showError(result.message)
+                    base = BaseState.showSnackbar(result.message)
                 )
             }
             is VenueDetailResult.Success -> previousState.copy(

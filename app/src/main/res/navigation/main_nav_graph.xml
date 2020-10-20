@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore.DashboardFragment"
+        android:name="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore.DashboardMviFragment"
         android:label="dashboard_fragment"
         tools:layout="@layout/fragment_dashboard">
 
@@ -37,13 +37,13 @@
 
     <fragment
         android:id="@+id/requirementSatisfierFragment"
-        android:name="com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierFragment"
+        android:name="com.sadri.foursquare.ui.screens.requirement_satisfier.RequirementSatisfierMviFragment"
         android:label="requirement_satisfier_fragment"
         tools:layout="@layout/fragment_requirement_satisfier" />
 
     <fragment
         android:id="@+id/venueDetailFragment"
-        android:name="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.mvi.VenueDetailMviFragment"
+        android:name="com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail.VenueDetailMviFragment"
         android:label="venue_detail_fragment"
         tools:layout="@layout/fragment_venue_detail">
         <argument

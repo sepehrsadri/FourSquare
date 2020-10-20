@@ -1,9 +1,8 @@
 package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.explore
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
+import com.sadri.foursquare.R
 import com.sadri.foursquare.components.location.LocationProvider
 import com.sadri.foursquare.components.permission.PermissionProvider
 import com.sadri.foursquare.data.repositories.explore.EXPLORE_DATA_OFFSET
@@ -13,35 +12,73 @@ import com.sadri.foursquare.data.repositories.explore.ExploreResult
 import com.sadri.foursquare.data.repositories.venue_detail.VenueDetailSingleSourceOfTruth
 import com.sadri.foursquare.data.utils.Result
 import com.sadri.foursquare.models.venue.Venue
-import com.sadri.foursquare.ui.navigation.NavigationViewModel
+import com.sadri.foursquare.ui.utils.Coordinator
+import com.sadri.foursquare.ui.utils.mvi.BaseMviViewModel
+import com.sadri.foursquare.ui.utils.mvi.BaseState
 import com.sadri.foursquare.utils.gps.GpsStateMonitor
-import com.sadri.foursquare.utils.live_data.SingleLiveEvent
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * Created by Sepehr Sadri on 5/31/2020.
- * sepehrsadri@gmail.com
- * Tehran, Iran.
- * Copyright © 2020 by Sepehr Sadri. All rights reserved.
- */
-class DashboardViewModel @Inject constructor(
+class DashboardMviViewModel @Inject constructor(
     gpsStateMonitor: GpsStateMonitor,
     private val permissionProvider: PermissionProvider,
     private val exploreDataSingleSourceOfTruth: ExploreDataSingleSourceOfTruth,
     private val venueDetailSingleSourceOfTruth: VenueDetailSingleSourceOfTruth,
+    private val coordinator: Coordinator,
     locationProvider: LocationProvider
-) : NavigationViewModel() {
-    val messageEvent = SingleLiveEvent<String>()
-    val locationChange = SingleLiveEvent<Nothing>()
+) : BaseMviViewModel<DashboardViewState, DashboardIntent, DashboardResult>(DashboardViewState.idle()),
+    DashboardListAdapterContract {
+    override fun reduce(
+        previousState: DashboardViewState,
+        result: DashboardResult
+    ): DashboardViewState =
+        when (result) {
+            DashboardResult.Loading -> {
+                previousState.copy(
+                    base = BaseState.loading(),
+                    venueListChanged = false
+                )
+            }
+            is DashboardResult.VenueListFetched -> {
+                previousState.copy(
+                    base = BaseState.stable(),
+                    venuesList = result.venues,
+                    venueListChanged = true,
+                    venuesListAvailability = true
+                )
+            }
+            is DashboardResult.Error -> {
+                previousState.copy(
+                    base = BaseState.showSnackbar(result.message),
+                    venueListChanged = false,
+                    venuesListAvailability = venuesList.isNotEmpty()
+                )
+            }
+            is DashboardResult.ResMsg -> {
+                previousState.copy(
+                    base = BaseState.showSnackbar(result.message),
+                    venueListChanged = false,
+                    venuesListAvailability = venuesList.isNotEmpty()
+                )
+            }
+        }
 
-    private val _venues = MutableLiveData<List<Venue>>()
-    val venues: LiveData<List<Venue>>
-        get() = _venues
+    override fun dispatch(intent: DashboardIntent) {
+        super.dispatch(intent)
 
-    private val _venuesListAvailability = MutableLiveData(true)
-    val venuesListAvailability: LiveData<Boolean>
-        get() = _venuesListAvailability
+        when (intent) {
+            DashboardIntent.Scroll -> {
+                onScroll()
+            }
+            DashboardIntent.RefreshExplores -> {
+                refreshExplores()
+            }
+            DashboardIntent.Init -> {
+                initFetch()
+            }
+        }
+
+    }
 
     private var page: Int = 0
 
@@ -53,27 +90,23 @@ class DashboardViewModel @Inject constructor(
         Observer<Result<ExploreResult>> {
             when (it) {
                 is Result.Loading -> {
-                    fullscreenLoading.value = true
+                    newResult(DashboardResult.Loading)
                 }
                 is Result.Success -> {
-                    _venuesListAvailability.value = true
+                    newResult(DashboardResult.VenueListFetched(updateVenuesList(it)))
                     updateVenuesList(it)
-                    fullscreenLoading.value = false
                     isLoading = false
                 }
                 is Result.Error -> {
-                    fullscreenLoading.value = false
-                    messageEvent.value = it.error.message
-                    isLoading = false
-
-                    if (venuesList.isEmpty()) {
-                        _venuesListAvailability.value = false
-                    }
+                    newResult(DashboardResult.Error(it.error.message))
+                }
+                Result.Empty -> {
+                    newResult(DashboardResult.ResMsg(R.string.error_unknown))
                 }
             }
         }
 
-    private fun updateVenuesList(it: Result.Success<ExploreResult>) {
+    private fun updateVenuesList(it: Result.Success<ExploreResult>): List<Venue> {
         val data = it.data
         val venues = data.result
         val offset = data.offset
@@ -89,7 +122,7 @@ class DashboardViewModel @Inject constructor(
             venuesList.addAll(venues)
         }
 
-        _venues.value = ArrayList(venuesList.toList())
+        return ArrayList(venuesList.toList())
     }
 
     init {
@@ -97,14 +130,14 @@ class DashboardViewModel @Inject constructor(
             gpsStateMonitor.hasGps,
             Observer {
                 if (permissionProvider.isLocationAvailableAndAccessible().not()) {
-                    navigate(DashboardFragmentDirections.navigateToRequirementSatisfierFragment())
+                    coordinator.navigate(DashboardMviFragmentDirections.navigateToRequirementSatisfierFragment())
                 }
             }
         )
         observe(
             locationProvider.locationChange,
             Observer {
-                locationChange.call()
+                newResult(DashboardResult.ResMsg(R.string.location_updating))
                 venuesList.clear()
                 page = 0
                 fetchVenues()
@@ -121,16 +154,8 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    fun onVenueClick(venue: Venue) {
-        navigate(
-            DashboardFragmentDirections
-                .navigateToVenueDetailFragment(
-                    venue.id
-                )
-        )
-    }
 
-    fun onScroll() {
+    private fun onScroll() {
         page++
         fetchVenues()
     }
@@ -151,18 +176,27 @@ class DashboardViewModel @Inject constructor(
 
     private fun isReachMaximumPage() = page > EXPLORE_MAXIMUM_PAGE
 
-    fun initFetch() {
+    private fun initFetch() {
         if (venuesList.isEmpty()) {
             fetchVenues()
         }
     }
 
-    fun refreshExplores() {
+    private fun refreshExplores() {
         viewModelScope.launch {
             exploreDataSingleSourceOfTruth.explorePersistentDataSource.clear()
             venuesList.clear()
             page = 0
             fetchVenues()
         }
+    }
+
+    override fun onVenueClick(venue: Venue) {
+        coordinator.navigate(
+            DashboardMviFragmentDirections
+                .navigateToVenueDetailFragment(
+                    venueId = venue.id
+                )
+        )
     }
 }

@@ -1,21 +1,17 @@
 package com.sadri.foursquare.ui.utils.mvi
 
-import com.sadri.foursquare.ui.navigation.NavigationCommand
-
 data class BaseState(
     val stable: Boolean = true,
-    val error: ErrorState = ErrorState.Disabled,
-    val showLoading: Boolean = false,
-    val coordinate: NavigationCommand = NavigationCommand.Nothing
+    val message: Message = Message.Disabled,
+    val showLoading: Boolean = false
 ) {
 
-    sealed class ErrorState(val showSnackBar: Boolean) {
-        data class String(val snackBarMessageString: kotlin.String) :
-            ErrorState(showSnackBar = true)
-
-        data class Res(val snackBarMessage: Int) : ErrorState(showSnackBar = true)
-        data class UnAuthorized(val errorMessage: kotlin.String) : ErrorState(showSnackBar = false)
-        object Disabled : ErrorState(showSnackBar = false)
+    sealed class Message {
+        data class SnackBarString(val snackBarMessageString: kotlin.String) : Message()
+        data class SnackBarRes(val snackBarMessage: Int) : Message()
+        data class ToastString(val message: String) : Message()
+        data class ToastRes(val message: Int) : Message()
+        object Disabled : Message()
     }
 
 
@@ -27,18 +23,37 @@ data class BaseState(
             showLoading = true
         )
 
-        fun showError(message: String) =
+        fun showSnackbar(message: String) =
             BaseState(
                 stable = false,
-                error = ErrorState.String(
+                message = Message.SnackBarString(
                     message
                 )
             )
 
-        fun coordinate(navigationCommand: NavigationCommand) =
+        fun showSnackbar(message: Int) =
             BaseState(
                 stable = false,
-                coordinate = navigationCommand
+                message = Message.SnackBarRes(
+                    message
+                )
+            )
+
+
+        fun showToast(message: String) =
+            BaseState(
+                stable = false,
+                message = Message.ToastString(
+                    message
+                )
+            )
+
+        fun showToast(message: Int) =
+            BaseState(
+                stable = false,
+                message = Message.ToastRes(
+                    message
+                )
             )
     }
 }
