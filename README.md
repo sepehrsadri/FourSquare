@@ -1,7 +1,9 @@
 Android-MVI-Sample-FourSquare
 =========================
 
-Android-MVI-Sample-FourSquare forked project from [Foursquare](https://github.com/sepehrs3ep/FourSquare) that implemented the whole project via MVI architecture
+FourSquare - find nearby places around you!
+Explore places using your current location with FourSquare API.
+Update places detecting your location change.
 
 Introduction
 ------------
