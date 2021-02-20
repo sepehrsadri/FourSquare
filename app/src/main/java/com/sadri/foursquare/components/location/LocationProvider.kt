@@ -6,11 +6,11 @@ import android.os.Looper
 import com.sadri.foursquare.data.utils.KeyValueStorage
 import com.sadri.foursquare.data.utils.LocationResult
 import com.sadri.foursquare.models.MyPoint
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import com.sadri.foursquare.utils.isSame
 import com.sadri.foursquare.utils.live_data.SingleLiveEvent
 import com.sadri.foursquare.utils.toLocation
 import com.sadri.foursquare.utils.toMyPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,7 +25,8 @@ import javax.inject.Singleton
 @Singleton
 class LocationProvider @Inject constructor(
     private val locationListener: LocationListener,
-    private val keyValueStorage: KeyValueStorage
+    private val keyValueStorage: KeyValueStorage,
+    private val dispatcher: DispatcherProvider
 ) {
     private val handler = Handler(Looper.getMainLooper())
 
@@ -72,7 +73,7 @@ class LocationProvider @Inject constructor(
     }
 
     private fun saveNewLocation(location: Location?) =
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(dispatcher.ui()) {
             if (location == null) {
                 return@launch
             }

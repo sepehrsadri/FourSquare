@@ -4,8 +4,10 @@ import android.content.Context
 import com.sadri.foursquare.data.utils.KeyValueStorage
 import com.sadri.foursquare.di.app.ApplicationContext
 import com.sadri.foursquare.di.data.api.RetrofitModule
+import com.sadri.foursquare.di.data.dispatcher.DispatcherModule
 import com.sadri.foursquare.di.data.explore.VenueModule
 import com.sadri.foursquare.di.data.persistent.PersistentModule
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -20,7 +22,8 @@ import javax.inject.Singleton
     includes = [
         RetrofitModule::class,
         VenueModule::class,
-        PersistentModule::class
+        PersistentModule::class,
+        DispatcherModule::class
     ]
 )
 object DataModule {
@@ -28,12 +31,14 @@ object DataModule {
     @Provides
     @Singleton
     fun provideKeyValueStorage(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
+        dispatcherProvider: DispatcherProvider
     ): KeyValueStorage {
         return KeyValueStorage(
             KeyValueStorage.getPrivateSharedPreferences(
                 context
-            )
+            ),
+            dispatcherProvider
         )
     }
 }

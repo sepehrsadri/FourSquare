@@ -10,9 +10,9 @@ import androidx.lifecycle.MutableLiveData
 import com.sadri.foursquare.components.permission.PermissionProvider
 import com.sadri.foursquare.components.permission.PermissionResult
 import com.sadri.foursquare.di.app.ApplicationContext
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import com.sadri.foursquare.utils.gps.GpsStateMonitor
 import com.sadri.foursquare.utils.isSame
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,7 +31,8 @@ import kotlin.math.abs
 class LocationListener @Inject constructor(
     @ApplicationContext private val context: Context,
     private val permissionProvider: PermissionProvider,
-    gpsStateMonitor: GpsStateMonitor
+    gpsStateMonitor: GpsStateMonitor,
+    private val dispatcher: DispatcherProvider
 ) : LocationListener {
     private val locationManager: LocationManager =
         context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -111,12 +112,12 @@ class LocationListener @Inject constructor(
     }
 
     private fun updateLastLocation() =
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(dispatcher.ui()) {
             lastLocation = getLastLocation()
         }
 
     private suspend fun getLastLocation(): Location? =
-        withContext(Dispatchers.Default) {
+        withContext(dispatcher.default()) {
             if (permissionProvider.isLocationAvailableAndAccessible().not()) {
                 return@withContext null
             }
@@ -151,7 +152,7 @@ class LocationListener @Inject constructor(
         location: Location,
         currentBestLocation: Location
     ): Boolean =
-        withContext(Dispatchers.Default) {
+        withContext(dispatcher.default()) {
             // new Location would not process if update was too fast.
             if (
                 abs(location.time - currentBestLocation.time) <
@@ -210,7 +211,7 @@ class LocationListener @Inject constructor(
             return
         }
 
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(dispatcher.ui()) {
             when {
                 lastLocation == null -> {
                     updateLocation(location)
