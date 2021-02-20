@@ -6,7 +6,7 @@ import androidx.core.content.edit
 import com.google.gson.Gson
 import com.sadri.foursquare.BuildConfig
 import com.sadri.foursquare.models.MyPoint
-import kotlinx.coroutines.Dispatchers
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -16,7 +16,10 @@ import javax.inject.Inject
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-class KeyValueStorage @Inject constructor(private val sharedPreferences: SharedPreferences) {
+class KeyValueStorage @Inject constructor(
+    private val sharedPreferences: SharedPreferences,
+    private val dispatcher: DispatcherProvider
+) {
     companion object {
         private const val SHARED_PREFERENCES_NAME =
             "${BuildConfig.APPLICATION_ID}.local_key_value_storage"
@@ -39,18 +42,18 @@ class KeyValueStorage @Inject constructor(private val sharedPreferences: SharedP
     }
 
     suspend fun getString(key: String, defaultValue: String? = null): String? =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher.io()) {
             sharedPreferences.getString(key, defaultValue)
         }
 
-    suspend fun putString(key: String, value: String?) = withContext(Dispatchers.IO) {
+    suspend fun putString(key: String, value: String?) = withContext(dispatcher.io()) {
         sharedPreferences.edit(true) {
             putString(key, value)
         }
     }
 
     suspend fun getMyPoint(key: String, defaultValue: String? = null): MyPoint? =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher.io()) {
             val gson = Gson()
             val json = sharedPreferences.getString(key, defaultValue)
             gson.fromJson(
@@ -60,7 +63,7 @@ class KeyValueStorage @Inject constructor(private val sharedPreferences: SharedP
         }
 
     suspend fun putMyPoint(key: String, value: MyPoint) =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher.io()) {
             val gson = Gson()
             val json = gson.toJson(value)
             sharedPreferences.edit(true) {

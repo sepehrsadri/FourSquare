@@ -3,6 +3,7 @@ package com.sadri.foursquare.data.repositories.venue_detail
 import com.sadri.foursquare.data.api.APIUtils
 import com.sadri.foursquare.data.utils.ApiErrorHandler
 import com.sadri.foursquare.data.utils.BaseAPIDataSource
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,8 +16,9 @@ import javax.inject.Singleton
 @Singleton
 class VenueDetailApiDataSource @Inject constructor(
     private val services: VenueDetailServices,
-    errorHandler: ApiErrorHandler
-) : BaseAPIDataSource(errorHandler) {
+    errorHandler: ApiErrorHandler,
+    dispatcher: DispatcherProvider
+) : BaseAPIDataSource(errorHandler, dispatcher) {
 
     suspend fun getVenueDetail(
         venueId: String

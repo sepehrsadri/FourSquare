@@ -1,6 +1,6 @@
 package com.sadri.foursquare.data.utils
 
-import kotlinx.coroutines.Dispatchers
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import timber.log.Timber
@@ -14,9 +14,12 @@ import timber.log.Timber
 /**
  * Abstract Base Data source class with error handling
  */
-abstract class BaseAPIDataSource(private val apiErrorHandler: ApiErrorHandler) {
+abstract class BaseAPIDataSource(
+    private val apiErrorHandler: ApiErrorHandler,
+    private val dispatcher: DispatcherProvider
+) {
     protected suspend fun <T> getResult(call: suspend () -> Response<T>): ApiResult<T> =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher.io()) {
             try {
                 val response = call()
                 if (response.isSuccessful) {

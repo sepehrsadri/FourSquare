@@ -6,7 +6,7 @@ import androidx.lifecycle.liveData
 import com.sadri.foursquare.data.utils.ApiResult
 import com.sadri.foursquare.data.utils.Result
 import com.sadri.foursquare.models.venue.detail.VenueDetail
-import kotlinx.coroutines.Dispatchers
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,7 +19,8 @@ import javax.inject.Singleton
 @Singleton
 class VenueDetailSingleSourceOfTruth @Inject constructor(
     private val venueDetailApiDataSource: VenueDetailApiDataSource,
-    val venueDetailPersistentDataSource: VenueDetailPersistentDataSource
+    val venueDetailPersistentDataSource: VenueDetailPersistentDataSource,
+    private val dispatcher: DispatcherProvider
 ) {
     /**
      * This is right implementation of single source strategy because after fetching from api should update last data
@@ -27,7 +28,7 @@ class VenueDetailSingleSourceOfTruth @Inject constructor(
     fun fetchVenueDetail(
         venueId: String
     ): LiveData<Result<VenueDetail>> =
-        liveData(Dispatchers.Main) {
+        liveData(dispatcher.ui()) {
             emit(Result.Loading)
 
             emitSource(venueDetailPersistentDataSource.getById(venueId))
@@ -63,7 +64,7 @@ class VenueDetailSingleSourceOfTruth @Inject constructor(
     fun limitedFetchVenueDetail(
         venueId: String
     ): LiveData<Result<VenueDetail>> =
-        liveData(Dispatchers.Main) {
+        liveData(dispatcher.ui()) {
             emit(Result.Loading)
 
             val source = venueDetailPersistentDataSource.getByIdInstantly(venueId)

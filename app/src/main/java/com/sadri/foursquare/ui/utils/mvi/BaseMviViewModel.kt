@@ -1,12 +1,13 @@
 package com.sadri.foursquare.ui.utils.mvi
 
 import androidx.annotation.CallSuper
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import com.sadri.foursquare.ui.utils.mvi.model.MviIntent
 import com.sadri.foursquare.ui.utils.mvi.model.MviResult
 import com.sadri.foursquare.ui.utils.mvi.model.MviViewState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 abstract class BaseMviViewModel<STATE : MviViewState, INTENT : MviIntent, RESULT : MviResult>(
@@ -21,12 +22,10 @@ abstract class BaseMviViewModel<STATE : MviViewState, INTENT : MviIntent, RESULT
 
     fun newResult(result: RESULT) {
         Timber.d("$TAG new result : $result")
-        viewModelScope.launch(Dispatchers.Main) {
-            val previousState = _viewStates.value!!
-            val newState = reduce(previousState, result)
-            _viewStates.value = newState
-            Timber.d("$TAG : reducer reduced \n previous state $previousState \n to new state $newState")
-        }
+        val previousState = _viewStates.value!!
+        val newState = reduce(previousState, result)
+        _viewStates.postValue(newState)
+        Timber.d("$TAG : reducer reduced \n previous state $previousState \n to new state $newState")
     }
 
     @CallSuper

@@ -9,7 +9,7 @@ import com.sadri.foursquare.data.utils.LocationResult
 import com.sadri.foursquare.data.utils.Result
 import com.sadri.foursquare.models.MyPoint
 import com.sadri.foursquare.models.venue.Venue
-import kotlinx.coroutines.Dispatchers
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,12 +23,13 @@ import javax.inject.Singleton
 class ExploreDataSingleSourceOfTruth @Inject constructor(
     private val exploreApiDataSource: ExploreApiDataSource,
     val explorePersistentDataSource: ExplorePersistentDataSource,
-    private val locationProvider: LocationProvider
+    private val locationProvider: LocationProvider,
+    private val dispatcher: DispatcherProvider
 ) {
     fun fetchExplores(
         offset: Int
     ): LiveData<Result<ExploreResult>> =
-        liveData(Dispatchers.Main) {
+        liveData(dispatcher.ui()) {
             emit(Result.Loading)
 
             val locationResult = locationProvider.getLastLocationResult()

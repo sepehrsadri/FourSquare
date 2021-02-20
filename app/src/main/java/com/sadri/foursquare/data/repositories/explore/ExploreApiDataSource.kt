@@ -4,6 +4,7 @@ import com.sadri.foursquare.data.api.APIUtils
 import com.sadri.foursquare.data.utils.ApiErrorHandler
 import com.sadri.foursquare.data.utils.BaseAPIDataSource
 import com.sadri.foursquare.models.MyPoint
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,8 +17,9 @@ import javax.inject.Singleton
 @Singleton
 class ExploreApiDataSource @Inject constructor(
     private val service: ExploreServices,
-    errorHandler: ApiErrorHandler
-) : BaseAPIDataSource(errorHandler) {
+    errorHandler: ApiErrorHandler,
+    dispatcher: DispatcherProvider
+) : BaseAPIDataSource(errorHandler, dispatcher) {
 
     suspend fun getExplores(model: ExploreServiceModel) = getResult {
         service.getExplores(

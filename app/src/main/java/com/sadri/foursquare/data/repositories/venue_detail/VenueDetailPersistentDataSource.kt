@@ -6,7 +6,7 @@ import androidx.lifecycle.map
 import com.sadri.foursquare.data.persistent.venue_detail.VenueDetailDao
 import com.sadri.foursquare.data.utils.Result
 import com.sadri.foursquare.models.venue.detail.VenueDetail
-import kotlinx.coroutines.Dispatchers
+import com.sadri.foursquare.ui.utils.DispatcherProvider
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,16 +19,17 @@ import javax.inject.Singleton
  */
 @Singleton
 class VenueDetailPersistentDataSource @Inject constructor(
-    val venueDetailDao: VenueDetailDao
+    val venueDetailDao: VenueDetailDao,
+    private val dispatcher: DispatcherProvider
 ) {
     suspend fun getByIdInstantly(id: String): Result<VenueDetail> =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher.io()) {
             val data = venueDetailDao.getByIdInstantly(id)
             convertToResult(data)
         }
 
     fun getById(id: String): LiveData<Result<VenueDetail>> =
-        liveData(Dispatchers.Main) {
+        liveData(dispatcher.ui()) {
             val source = venueDetailDao.getById(id).map {
                 convertToResult(it)
             }
@@ -44,12 +45,12 @@ class VenueDetailPersistentDataSource @Inject constructor(
     }
 
     suspend fun clear() =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher.io()) {
             venueDetailDao.clear()
         }
 
     suspend fun save(venueDetail: VenueDetail) =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher.io()) {
             venueDetailDao.insert(venueDetail)
         }
 }
