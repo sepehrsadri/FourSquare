@@ -5,8 +5,10 @@ import com.sadri.foursquare.data.repositories.venue_detail.VenueDetailSingleSour
 import com.sadri.foursquare.data.utils.Result
 import com.sadri.foursquare.ui.utils.mvi.BaseMviViewModel
 import com.sadri.foursquare.ui.utils.mvi.BaseState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class VenueDetailMviViewModel @Inject constructor(
     private val venueDetailSingleSourceOfTruth: VenueDetailSingleSourceOfTruth
 ) : BaseMviViewModel<VenueDetailViewState, VenueDetailIntent, VenueDetailResult>(

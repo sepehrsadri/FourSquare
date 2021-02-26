@@ -3,9 +3,9 @@ package com.sadri.foursquare.data.utils
 import android.content.Context
 import com.sadri.foursquare.BuildConfig
 import com.sadri.foursquare.R
-import com.sadri.foursquare.di.app.ApplicationContext
 import com.sadri.foursquare.models.Error
 import com.sadri.foursquare.utils.network.isNetworkAvailable
+import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.HttpException
 import retrofit2.Response
 import javax.inject.Inject

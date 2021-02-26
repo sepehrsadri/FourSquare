@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.sadri.foursquare.R
 import com.sadri.foursquare.models.MyPoint
@@ -15,15 +14,14 @@ import com.sadri.foursquare.ui.navigation.NavigationCommand
 import com.sadri.foursquare.ui.utils.mvi.BaseMviFragment
 import com.sadri.foursquare.ui.utils.setSrcCompat
 import com.sadri.foursquare.ui.utils.snackBar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_venue_detail.*
 import timber.log.Timber
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class VenueDetailMviFragment :
     BaseMviFragment<VenueDetailViewState, VenueDetailIntent, VenueDetailMviViewModel>() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    override val viewModel: VenueDetailMviViewModel by viewModels { viewModelFactory }
+    override val viewModel: VenueDetailMviViewModel by viewModels()
 
     private val args: VenueDetailMviFragmentArgs by navArgs()
 

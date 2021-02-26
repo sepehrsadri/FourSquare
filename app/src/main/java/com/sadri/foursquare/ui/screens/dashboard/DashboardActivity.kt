@@ -1,9 +1,10 @@
 package com.sadri.foursquare.ui.screens.dashboard
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.sadri.foursquare.R
 import com.sadri.foursquare.components.permission.PermissionProvider
-import com.sadri.foursquare.ui.utils.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
@@ -12,10 +13,12 @@ import javax.inject.Inject
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-class DashboardActivity : BaseActivity() {
+@AndroidEntryPoint
+class DashboardActivity : AppCompatActivity() {
 
     @Inject
     lateinit var permissionProvider: PermissionProvider
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

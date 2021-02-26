@@ -7,7 +7,7 @@ import android.content.IntentFilter
 import android.location.LocationManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sadri.foursquare.di.app.ApplicationContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton

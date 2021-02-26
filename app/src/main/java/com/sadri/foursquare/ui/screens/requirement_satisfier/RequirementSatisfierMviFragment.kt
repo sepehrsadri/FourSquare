@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
@@ -15,6 +14,7 @@ import com.sadri.foursquare.R
 import com.sadri.foursquare.components.permission.PermissionProvider
 import com.sadri.foursquare.ui.utils.mvi.BaseMviFragment
 import com.sadri.foursquare.ui.utils.setSrcCompat
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_requirement_satisfier.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,15 +25,13 @@ import javax.inject.Inject
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
+@AndroidEntryPoint
 class RequirementSatisfierMviFragment :
     BaseMviFragment<RequirementSatisfierViewState, RequirementSatisfierIntent, RequirementSatisfierMviViewModel>() {
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
     lateinit var permissionProvider: PermissionProvider
 
-    override val viewModel: RequirementSatisfierMviViewModel by viewModels { viewModelFactory }
+    override val viewModel: RequirementSatisfierMviViewModel by viewModels()
 
 
     private val viewModelOwner =

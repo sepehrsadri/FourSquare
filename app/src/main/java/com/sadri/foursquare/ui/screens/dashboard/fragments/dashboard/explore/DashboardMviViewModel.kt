@@ -16,9 +16,12 @@ import com.sadri.foursquare.ui.utils.Coordinator
 import com.sadri.foursquare.ui.utils.mvi.BaseMviViewModel
 import com.sadri.foursquare.ui.utils.mvi.BaseState
 import com.sadri.foursquare.utils.gps.GpsStateMonitor
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+@HiltViewModel
 class DashboardMviViewModel @Inject constructor(
     gpsStateMonitor: GpsStateMonitor,
     private val permissionProvider: PermissionProvider,

@@ -7,28 +7,26 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sadri.foursquare.R
 import com.sadri.foursquare.components.permission.PermissionProvider
 import com.sadri.foursquare.ui.utils.EndlessRecyclerOnScrollListener
 import com.sadri.foursquare.ui.utils.mvi.BaseMviFragment
 import com.sadri.foursquare.utils.network.ConnectionStateMonitor
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DashboardMviFragment :
     BaseMviFragment<DashboardViewState, DashboardIntent, DashboardMviViewModel>() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
     @Inject
     lateinit var permissionProvider: PermissionProvider
 
     @Inject
     lateinit var connectionStateMonitor: ConnectionStateMonitor
 
-    override val viewModel: DashboardMviViewModel by viewModels { viewModelFactory }
+    override val viewModel: DashboardMviViewModel by viewModels()
 
     private lateinit var adapter: DashboardListAdapter
 
@@ -39,7 +37,7 @@ class DashboardMviFragment :
             }
         }
 
-    override fun container(): View = container
+    override fun container(): View = dashboardContainer
 
     override fun onCreateView(
         inflater: LayoutInflater,

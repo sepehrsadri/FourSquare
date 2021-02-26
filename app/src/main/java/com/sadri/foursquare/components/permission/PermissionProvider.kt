@@ -8,9 +8,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.sadri.foursquare.data.utils.KeyValueStorage
-import com.sadri.foursquare.di.app.ApplicationContext
 import com.sadri.foursquare.utils.gps.isGpsAvailable
 import com.sadri.foursquare.utils.live_data.SingleLiveEvent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
