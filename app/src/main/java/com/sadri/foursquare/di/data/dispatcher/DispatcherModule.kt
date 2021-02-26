@@ -4,11 +4,12 @@ import com.sadri.foursquare.ui.utils.DefaultDispatcher
 import com.sadri.foursquare.ui.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module
+@InstallIn(SingletonComponent::class)
 object DispatcherModule {
-    @Singleton
     @Provides
     fun providerDispatcher(): DispatcherProvider {
         return DefaultDispatcher()

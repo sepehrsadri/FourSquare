@@ -3,12 +3,12 @@ package com.sadri.foursquare.ui.utils
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.sadri.foursquare.ui.navigation.NavigationCommand
 import com.sadri.foursquare.utils.isFalseOrNull
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 /**
@@ -17,7 +17,7 @@ import javax.inject.Inject
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-abstract class BaseFragment : DaggerFragment() {
+abstract class BaseFragment : Fragment() {
     companion object {
         private const val KEYBOARD_SHOW_DELAY = 100L
     }

@@ -9,10 +9,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sadri.foursquare.components.permission.PermissionProvider
 import com.sadri.foursquare.components.permission.PermissionResult
-import com.sadri.foursquare.di.app.ApplicationContext
 import com.sadri.foursquare.ui.utils.DispatcherProvider
 import com.sadri.foursquare.utils.gps.GpsStateMonitor
 import com.sadri.foursquare.utils.isSame
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

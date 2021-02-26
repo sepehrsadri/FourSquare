@@ -14,6 +14,7 @@ import com.sadri.foursquare.ui.utils.Coordinator
 import com.sadri.foursquare.ui.utils.mvi.BaseMviViewModelContainsOwner
 import com.sadri.foursquare.ui.utils.mvi.BaseState
 import com.sadri.foursquare.utils.gps.GpsStateMonitor
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 /**
@@ -22,6 +23,7 @@ import javax.inject.Inject
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
+@HiltViewModel
 class RequirementSatisfierMviViewModel @Inject constructor(
     private val permissionProvider: PermissionProvider,
     private val coordinator: Coordinator,
