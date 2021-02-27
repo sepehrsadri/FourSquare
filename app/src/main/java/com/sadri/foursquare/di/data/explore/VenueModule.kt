@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 /**
  * Created by Sepehr Sadri on 6/3/2020.
@@ -19,6 +20,7 @@ import retrofit2.Retrofit
 @InstallIn(SingletonComponent::class)
 object VenueModule {
     @Provides
+    @Singleton
     fun provideExploreApiServices(retrofit: Retrofit): ExploreServices {
         return RetrofitProvider.provideService(
             retrofit,
@@ -27,6 +29,7 @@ object VenueModule {
     }
 
     @Provides
+    @Singleton
     fun provideVenueDetailApiServices(retrofit: Retrofit): VenueDetailServices {
         return RetrofitProvider.provideService(
             retrofit,

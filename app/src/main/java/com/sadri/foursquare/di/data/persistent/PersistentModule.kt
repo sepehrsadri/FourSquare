@@ -11,6 +11,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 /**
  * Created by Sepehr Sadri on 6/3/2020.
@@ -22,16 +23,19 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object PersistentModule {
     @Provides
+    @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return AppDatabase.getAppDataBase(context)
     }
 
     @Provides
+    @Singleton
     fun provideVenueDao(appDatabase: AppDatabase): ExploreDao {
         return appDatabase.venueDao()
     }
 
     @Provides
+    @Singleton
     fun provideVenueDetailDao(appDatabase: AppDatabase): VenueDetailDao {
         return appDatabase.venueDetailDao()
     }
