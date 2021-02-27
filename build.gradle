@@ -66,6 +66,7 @@ ext {
             mockitoKotlin: '2.2.0',
             mockitoCore  : "1.10.19",
             runner       : '1.1.0',
+            rules        : '1.1.0',
             uiAutomator  : '2.2.0',
     ]
 

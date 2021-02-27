@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 /**
  * Created by Sepehr Sadri on 5/31/2020.
@@ -17,6 +18,7 @@ import retrofit2.Retrofit
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
     @Provides
+    @Singleton
     fun provideRetrofit(): Retrofit {
         return RetrofitProvider.getRetrofit()
     }
