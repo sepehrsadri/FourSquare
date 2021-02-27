@@ -8,7 +8,6 @@ import com.sadri.foursquare.models.venue.Venue
 import com.sadri.foursquare.ui.adapter.BindingViewHolder
 import com.sadri.foursquare.ui.adapter.GenericListAdapter
 import com.sadri.foursquare.ui.utils.setTextFromResourcesWithArg
-import com.sadri.foursquare.utils.extractEnDigits
 
 /**
  * Created by Sepehr Sadri on 6/3/2020.
@@ -55,7 +54,7 @@ class DashboardListAdapter(
         override fun bind(data: Venue) {
             this.data = data
 
-            txtVenueName.text = data.name.extractEnDigits()
+            txtVenueName.text = data.formattedName
             txtVenueCategory.text = data.categories.firstOrNull()?.name
             txtVenueDistance.setTextFromResourcesWithArg(
                 R.string.distance_place_holder,

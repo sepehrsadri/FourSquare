@@ -58,16 +58,17 @@ ext {
 
     // Test
     test = [
-            testJUnit    : '4.12',
-            espresso     : '3.1.0',
-            androidxJunit: '1.1.0',
-            androidxCore : "1.0.0",
-            mockitoInline: '3.3.0',
-            mockitoKotlin: '2.2.0',
-            mockitoCore  : "1.10.19",
-            runner       : '1.1.0',
-            rules        : '1.1.0',
-            uiAutomator  : '2.2.0',
+            testJUnit           : '4.12',
+            espresso            : '3.1.0',
+            androidxJunit       : '1.1.0',
+            androidxCore        : "1.0.0",
+            mockitoInline       : '3.3.0',
+            mockitoKotlin       : '2.2.0',
+            mockitoCore         : "1.10.19",
+            runner              : '1.1.0',
+            rules               : '1.1.0',
+            uiAutomator         : '2.2.0',
+            okHttpIdlingResource: '1.0.0',
     ]
 
     // AndroidX

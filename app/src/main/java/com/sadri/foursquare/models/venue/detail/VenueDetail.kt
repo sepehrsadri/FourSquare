@@ -6,6 +6,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.sadri.foursquare.models.venue.Location
 import com.sadri.foursquare.models.venue.category.Category
+import com.sadri.foursquare.utils.extractEnDigits
 
 /**
  * Created by Sepehr Sadri on 6/6/2020.
@@ -46,4 +47,7 @@ data class VenueDetail(
     @Expose
     @SerializedName("hours")
     val hours: Hour?
-)
+) {
+    val formattedName: String
+        get() = name.extractEnDigits()
+}

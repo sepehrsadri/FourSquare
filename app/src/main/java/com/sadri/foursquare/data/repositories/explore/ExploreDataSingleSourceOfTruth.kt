@@ -1,5 +1,6 @@
 package com.sadri.foursquare.data.repositories.explore
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataScope
 import androidx.lifecycle.liveData
@@ -26,6 +27,8 @@ class ExploreDataSingleSourceOfTruth @Inject constructor(
     private val locationProvider: LocationProvider,
     private val dispatcher: DispatcherProvider
 ) {
+    private val fetchedList: MutableList<Result<ExploreResult>> = ArrayList()
+
     fun fetchExplores(
         offset: Int
     ): LiveData<Result<ExploreResult>> =
@@ -76,16 +79,25 @@ class ExploreDataSingleSourceOfTruth @Inject constructor(
                         }
                         when {
                             venues.isNullOrEmpty().not() -> {
-                                emit(Result.Success(ExploreResult(venues, offset, true)))
+                                val result = Result.Success(ExploreResult(venues, offset, true))
+                                fetchedList.add(result)
+                                emit(result)
                                 explorePersistentDataSource.insertByPage(offset, venues)
                             }
                         }
                     }
                 }
             }
-            is ApiResult.Error -> emit(Result.Error(apiRes.error))
+            is ApiResult.Error -> {
+                val result = Result.Error(apiRes.error)
+                fetchedList.add(result)
+                emit(result)
+            }
         }
     }
+
+    @VisibleForTesting
+    fun getFetchedList() = fetchedList
 }
 
 data class ExploreResult(

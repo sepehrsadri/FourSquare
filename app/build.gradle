@@ -139,6 +139,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$rootProject.test.espresso"
     androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$rootProject.test.espresso"
     androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$rootProject.test.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.test.espresso"
+    androidTestCompile "com.jakewharton.espresso:okhttp3-idling-resource:$rootProject.test.okHttpIdlingResource"
 
 
     androidTestImplementation "androidx.test:runner:$rootProject.test.runner"

@@ -48,7 +48,7 @@ class VenueDetailMviFragment :
         addViewsListeners()
     }
 
-    override fun container(): View = container
+    override fun container(): View = detailContainer
 
     private fun addViewsListeners() {
         backIv.setOnClickListener {
@@ -85,7 +85,7 @@ class VenueDetailMviFragment :
     private fun showCallToActionErrorToast() {
         requireContext().snackBar(
             R.string.error_unknown,
-            container
+            detailContainer
         )
     }
 
