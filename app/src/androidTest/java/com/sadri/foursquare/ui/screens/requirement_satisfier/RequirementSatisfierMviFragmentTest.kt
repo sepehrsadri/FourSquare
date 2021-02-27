@@ -13,6 +13,7 @@ import androidx.test.uiautomator.UiObject
 import androidx.test.uiautomator.UiSelector
 import com.sadri.foursquare.R
 import com.sadri.foursquare.ui.screens.dashboard.DashboardActivity
+import com.sadri.foursquare.utils.TEST_TIMEOUT_MS
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -42,7 +43,7 @@ class RequirementSatisfierMviFragmentTest {
     fun setup() {
     }
 
-    @Test
+    @Test(timeout = TEST_TIMEOUT_MS)
     fun test1UiElementInitAsExpected() {
         onView(withId(R.id.actionBtn)).check(
             matches(
@@ -53,7 +54,7 @@ class RequirementSatisfierMviFragmentTest {
         )
     }
 
-    @Test
+    @Test(timeout = TEST_TIMEOUT_MS)
     fun test2ClickOnAllowGpsButtonWillShowPermissionDialog() {
         onView(withId(R.id.actionBtn)).perform(
             click()
@@ -68,7 +69,7 @@ class RequirementSatisfierMviFragmentTest {
         )
     }
 
-    @Test
+    @Test(timeout = TEST_TIMEOUT_MS)
     fun test3AcceptPermissionWillNavigateToDashboard() {
         onView(withId(R.id.actionBtn)).perform(
             click()

@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.sadri.foursquare.models.venue.category.Category
+import com.sadri.foursquare.utils.extractEnDigits
 
 /**
  * Created by Sepehr Sadri on 6/3/2020.
@@ -27,4 +28,7 @@ data class Venue(
     @Expose
     @SerializedName("categories")
     val categories: List<Category>
-)
+) {
+    val formattedName: String
+        get() = name.extractEnDigits()
+}

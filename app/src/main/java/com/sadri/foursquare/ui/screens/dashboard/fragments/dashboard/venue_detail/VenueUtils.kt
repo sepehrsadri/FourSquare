@@ -1,10 +1,9 @@
 package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail
 
 import com.sadri.foursquare.models.venue.detail.VenueDetail
-import com.sadri.foursquare.utils.extractEnDigits
 import com.sadri.foursquare.utils.toMyPoint
 
- fun convertToUiDataModel(
+fun convertToUiDataModel(
     data: VenueDetail
 ): VenueDetailDataModel {
     val isOpenStatus = data.hours
@@ -72,7 +71,7 @@ import com.sadri.foursquare.utils.toMyPoint
         }
 
     return VenueDetailDataModel(
-        data.name.extractEnDigits(),
+        data.formattedName,
         category,
         rate,
         availabilityStatus,
