@@ -1,14 +1,13 @@
 package com.sadri.foursquare.di.data.dispatcher
 
-import android.os.AsyncTask
 import com.sadri.foursquare.ui.utils.DispatcherProvider
+import com.sadri.foursquare.utils.idling_resource.EspressoTrackedDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asCoroutineDispatcher
 import javax.inject.Singleton
 
 
@@ -22,11 +21,9 @@ object TestDispatcherModule {
 
         override fun ui(): CoroutineDispatcher = Dispatchers.Main
 
-        override fun io(): CoroutineDispatcher =
-            AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
+        override fun io(): CoroutineDispatcher = EspressoTrackedDispatcher(Dispatchers.IO)
 
-        override fun default(): CoroutineDispatcher =
-            AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
+        override fun default(): CoroutineDispatcher = EspressoTrackedDispatcher(Dispatchers.Default)
 
     }
 

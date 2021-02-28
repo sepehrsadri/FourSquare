@@ -17,7 +17,7 @@ import com.sadri.foursquare.data.repositories.explore.ExploreResult
 import com.sadri.foursquare.data.utils.Result
 import com.sadri.foursquare.ui.screens.dashboard.DashboardActivity
 import com.sadri.foursquare.utils.TEST_TIMEOUT_MS
-import com.sadri.foursquare.utils.idling_resource.OkHttpIdlingResourceRule
+import com.sadri.foursquare.utils.idling_resource.EspressoIdlingResourceRule
 import com.sadri.foursquare.utils.idling_resource.waitUntilViewIsDisplayed
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -36,6 +36,7 @@ import javax.inject.Inject
 @LargeTest
 class DashboardMviFragmentTest {
 
+    var espressoIdlingResourceRule = EspressoIdlingResourceRule()
     var hiltRule = HiltAndroidRule(this)
     var activityScenarioRule = activityScenarioRule<DashboardActivity>()
 
@@ -44,13 +45,11 @@ class DashboardMviFragmentTest {
     var accessCoarseLocationPermissionRule =
         GrantPermissionRule.grant(android.Manifest.permission.ACCESS_COARSE_LOCATION)
 
-    var okHttpIdlingResource = OkHttpIdlingResourceRule()
-
     @get:Rule
     var rulesChain = RuleChain
-        .outerRule(accessFineLocationPermissionRule)
+        .outerRule(espressoIdlingResourceRule)
+        .around(accessFineLocationPermissionRule)
         .around(accessCoarseLocationPermissionRule)
-        .around(okHttpIdlingResource)
         .around(hiltRule)
         .around(activityScenarioRule)
 
@@ -97,7 +96,9 @@ class DashboardMviFragmentTest {
             )
         ).perform(click())
 
-        waitUntilViewIsDisplayed(withId(R.id.detailContainer))
+        onView(
+            withId(R.id.detailContainer)
+        ).check(matches(isDisplayed()))
 
         onView(
             withId(
