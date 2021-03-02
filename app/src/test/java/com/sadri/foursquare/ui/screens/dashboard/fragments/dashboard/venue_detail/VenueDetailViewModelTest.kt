@@ -1,21 +1,22 @@
 package com.sadri.foursquare.ui.screens.dashboard.fragments.dashboard.venue_detail
 
+import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
 import com.sadri.foursquare.data.repositories.venue_detail.VenueDetailApiDataSource
 import com.sadri.foursquare.data.repositories.venue_detail.VenueDetailPersistentDataSource
 import com.sadri.foursquare.data.repositories.venue_detail.VenueDetailSingleSourceOfTruth
 import com.sadri.foursquare.data.utils.ApiResult
 import com.sadri.foursquare.data.utils.Result
-import com.sadri.foursquare.general.Behavior
 import com.sadri.foursquare.general.TestCase
+import com.sadri.foursquare.general.TestDispatcher
 import com.sadri.foursquare.general.getOrAwaitValue
 import com.sadri.foursquare.models.venue.Location
 import com.sadri.foursquare.models.venue.category.Category
 import com.sadri.foursquare.models.venue.category.Icon
 import com.sadri.foursquare.models.venue.detail.VenueDetail
-import com.sadri.foursquare.ui.navigation.NavigationCommand
+import com.sadri.foursquare.ui.utils.mvi.BaseState
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -26,8 +27,7 @@ import org.junit.Test
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
 internal class VenueDetailViewModelTest : TestCase() {
-    private lateinit var venueDetailViewModel: VenueDetailViewModel
-    private lateinit var spiedVenueDetailViewModel: VenueDetailViewModel
+    private lateinit var venueDetailViewModel: VenueDetailMviViewModel
 
     private val venuePersistentDataSource = mock<VenueDetailPersistentDataSource> {
         onBlocking { getByIdInstantly(SUCCESS_VENUE_ID) } doReturn Result.Success(
@@ -42,37 +42,46 @@ internal class VenueDetailViewModelTest : TestCase() {
         )
     }
 
+    private val viewModelObserver = Observer<VenueDetailViewState> {}
+
     override fun tearDown() {
+        venueDetailViewModel.viewStates().removeObserver(viewModelObserver)
     }
 
     override fun setup() {
         val venueDataSingleSourceOfTruth = VenueDetailSingleSourceOfTruth(
             venueApiDataSource,
-            venuePersistentDataSource
+            venuePersistentDataSource,
+            TestDispatcher
         )
 
-        venueDetailViewModel = VenueDetailViewModel(venueDataSingleSourceOfTruth)
-        spiedVenueDetailViewModel = spy(venueDetailViewModel)
+        venueDetailViewModel = VenueDetailMviViewModel(venueDataSingleSourceOfTruth)
+
+        venueDetailViewModel.viewStates().observeForever(viewModelObserver)
     }
 
-    @Behavior
     @Test
-    fun `given exist venue id when fetchVenueDetail then venueDetail contain response`() {
+    fun `given fetch intent when venueDetailApiDataSource success then state contain response`() {
         // Given
-        val id = SUCCESS_VENUE_ID
+        val intent = VenueDetailIntent.Fetch(SUCCESS_VENUE_ID)
 
         // When
-        venueDetailViewModel.fetchVenueDetail(id)
+        venueDetailViewModel.dispatch(intent)
 
         // Then
-        val venueDetail = venueDetailViewModel.venueDetail.getOrAwaitValue()
+        val state = venueDetailViewModel.viewStates().getOrAwaitValue()
+        val result = state.result
 
         assertTrue(
-            successVenueDetailResponse.name == venueDetail.name
+            state.base.stable
+        )
+
+        assertTrue(
+            successVenueDetailResponse.name == result.name
         )
 
         val category =
-            venueDetail.category
+            result.category
                     as
                     com.sadri.foursquare.ui.screens.dashboard
                     .fragments.dashboard.venue_detail.Category.Available
@@ -82,18 +91,25 @@ internal class VenueDetailViewModelTest : TestCase() {
         )
     }
 
-    @Behavior
     @Test
-    fun `given venueId when venueDetailApiDataSource return error then navigate back`() {
+    fun `given fetch intent when venueDetailApiDataSource return error then state is show toast`() {
         // Given
-        val id = ERROR_VENUE_ID
+        val intent = VenueDetailIntent.Fetch(ERROR_VENUE_ID)
 
         // When
-        venueDetailViewModel.fetchVenueDetail(id)
+        venueDetailViewModel.dispatch(intent)
 
         // Then
+        val state = venueDetailViewModel.viewStates().getOrAwaitValue()
+
+        assertFalse(
+            state.base.stable
+        )
         assertTrue(
-            venueDetailViewModel.navigationCommands.getOrAwaitValue() is NavigationCommand.Back
+            state.base.message !is BaseState.Message.Disabled
+        )
+        assertFalse(
+            state.base.showLoading
         )
     }
 
